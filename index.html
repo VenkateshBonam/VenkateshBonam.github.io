@@ -3,525 +3,1091 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Venkatesh Bonam — UI/UX & Graphic Designer</title>
-
+    <title>Venkatesh Bonam – UI/UX & Graphic Designer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- 1. SETUP & VARIABLES --- */
         :root {
-            --color-background: #FFFFFF;
-            --color-text-primary: #111827;
-            --color-text-secondary: #6B7280;
-            --color-border: #E5E7EB;
-            --color-surface: #F9FAFB;
-            --color-accent: #3B82F6;
+            --bg-primary: #0A0A0A;
+            --bg-secondary: #141414;
+            --bg-tertiary: #1A1A1A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A0A0;
+            --text-tertiary: #666666;
+            --accent: #6366F1;
+            --accent-hover: #4F46E5;
+            --border: #2A2A2A;
+            --shadow: rgba(99, 102, 241, 0.2);
             
             --font-primary: 'Inter', sans-serif;
-            --font-mono: 'Space Mono', monospace;
-
-            --container-width: 1240px;
-            --container-padding: 1.5rem;
+            --font-display: 'Space Grotesk', sans-serif;
             
-            --section-padding-y: 8rem;
-            --nav-height: 5rem;
-            --transition-cubic: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition: cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; scroll-padding-top: var(--nav-height); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        
         body {
             font-family: var(--font-primary);
-            background-color: var(--color-background);
-            color: var(--color-text-primary);
-            line-height: 1.7;
-            -webkit-font-smoothing: antialiased;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
-        body.nav-open { overflow: hidden; }
 
-        /* --- 2. LAYOUT & GLOBAL COMPONENTS --- */
-        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 var(--container-padding); }
-        .section { padding: var(--section-padding-y) 0; }
-        .section-header { text-align: center; margin-bottom: 4rem; }
-        .section-header .subtitle { color: var(--color-text-secondary); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.9rem; }
-        .section-header .title { font-size: clamp(2rem, 5vw, 2.5rem); font-weight: 700; margin-top: 0.5rem; letter-spacing: -0.02em; }
-        .grid { display: grid; gap: 2rem; }
+        /* NAVIGATION */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s var(--transition);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent) 0%, #8B5CF6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s var(--transition);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s var(--transition);
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 2px;
+            background: var(--text-primary);
+            transition: all 0.3s var(--transition);
+        }
+
+        /* HERO SECTION */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 3rem 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 100%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 5rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text .subtitle {
+            font-size: 1.25rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .hero-text p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            line-height: 1.8;
+            max-width: 600px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
 
         .btn {
-            display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.8rem 1.75rem;
-            border: 1px solid transparent; border-radius: 6px; font-weight: 600; text-decoration: none; font-size: 0.95rem;
-            transition: all 0.2s var(--transition-cubic); cursor: pointer;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
         }
-        .btn-primary { background-color: var(--color-text-primary); color: var(--color-background); border-color: var(--color-text-primary); }
-        .btn-primary:hover { background-color: transparent; color: var(--color-text-primary); transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .btn-secondary { background-color: var(--color-background); color: var(--color-text-primary); border-color: var(--color-border); }
-        .btn-secondary:hover { border-color: var(--color-text-primary); transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .icon { width: 1.25rem; height: 1.25rem; }
 
-        /* --- 3. NAVIGATION --- */
-        .main-nav {
-            position: sticky; top: 0; width: 100%; height: var(--nav-height); display: flex; align-items: center;
-            background-color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            z-index: 1000; border-bottom: 1px solid transparent; transition: border-color 0.3s ease;
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border: 2px solid var(--accent);
         }
-        .main-nav.scrolled { border-color: var(--color-border); }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-        .nav-logo a { font-weight: 700; color: var(--color-text-primary); text-decoration: none; font-size: 1.25rem; }
-        .desktop-nav { display: flex; align-items: center; gap: 2rem; }
-        .desktop-nav .nav-links { display: flex; gap: 2rem; list-style: none; }
-        .desktop-nav a { color: var(--color-text-secondary); text-decoration: none; font-weight: 500; transition: color 0.2s ease; position: relative; }
-        .desktop-nav a::after { content: ''; position: absolute; left: 50%; bottom: -4px; width: 0; height: 2px; background-color: var(--color-text-primary); transition: all 0.3s ease; }
-        .desktop-nav a:hover, .desktop-nav a.active { color: var(--color-text-primary); }
-        .desktop-nav a.active::after { width: 100%; left: 0; }
-        
-        .menu-toggle { display: none; background: none; border: none; cursor: pointer; z-index: 1002; padding: 0.5rem; }
-        .menu-toggle .bar { display: block; width: 25px; height: 2px; margin: 5px 0; background-color: var(--color-text-primary); transition: all 0.3s ease-in-out; }
-        .menu-toggle.open .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-        .menu-toggle.open .bar:nth-child(2) { opacity: 0; }
-        .menu-toggle.open .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-        
-        .mobile-nav {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--color-background);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 1001; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-        .mobile-nav.open { opacity: 1; visibility: visible; }
-        .mobile-nav .nav-links { flex-direction: column; text-align: center; font-size: 1.75rem; gap: 3rem; list-style: none; }
 
-        /* --- 4. HERO SECTION --- */
-        .hero { padding: 6rem 0; }
-        .hero-grid { display: grid; grid-template-columns: 2fr 1fr; align-items: center; gap: 4rem; }
-        .hero-text > * { opacity: 0; transform: translateY(20px); transition: opacity 0.6s var(--transition-cubic), transform 0.6s var(--transition-cubic); }
-        .hero-text.visible > * { opacity: 1; transform: translateY(0); }
-        .hero-text.visible .role { transition-delay: 0.1s; }
-        .hero-text.visible h1 { transition-delay: 0.2s; }
-        .hero-text.visible .hero-ctas { transition-delay: 0.3s; }
-        .hero .role { font-size: 1.125rem; font-weight: 500; color: var(--color-text-primary); }
-        .hero h1 { font-size: clamp(2.75rem, 6vw, 4.5rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; margin: 1rem 0 2.5rem; }
-        .hero-ctas { display: flex; gap: 1rem; }
-        
-        .hero-image-wrapper { justify-self: end; }
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--shadow);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            background: rgba(99, 102, 241, 0.1);
+            transform: translateY(-2px);
+        }
+
         .hero-image {
-            width: 320px; height: 400px; border-radius: 8px; overflow: hidden;
-            opacity: 0; transform: translateY(20px); transition: opacity 0.8s var(--transition-cubic) 0.2s, transform 0.8s var(--transition-cubic) 0.2s;
+	    position: relative;
+	    display: flex;
+	    justify-content: center;
+	}
+
+	.image-wrapper {
+	    position: relative;
+	    width: 400px;
+	    height: 500px;
+	    border-radius: 20px;
+	    overflow: hidden;
+	    border: 2px solid var(--border);
+	    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+	}
+
+	/* Glow border effect stays */
+	.image-wrapper::before {
+	    content: '';
+	    position: absolute;
+	    inset: -2px;
+	    background: linear-gradient(135deg, var(--accent) 0%, #8B5CF6 100%);
+	    border-radius: 20px;
+	    z-index: -1;
+	    opacity: 0.5;
+	    filter: blur(20px);
+	}
+
+	/* The actual photo */
+	.hero-photo {
+	    width: 100%;
+	    height: 100%;
+	    object-fit: cover;
+	    transition: transform .5s ease-in-out, opacity .5s ease-in-out;
+	}
+
+	/* Hover effect (optional, premium touch) */
+	.image-wrapper:hover .hero-photo {
+	    transform: scale(1.06);
+	    opacity: 0.95;
+	}
+
+
+        /* SECTIONS */
+        section {
+            padding: 8rem 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
         }
-        .hero-image.visible { opacity: 1; transform: translateY(0); }
-        .hero-image img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* --- 5. ABOUT SECTION --- */
-        .about-grid { grid-template-columns: 1.5fr 2fr; align-items: start; gap: 5rem; }
-        .about-bio p { margin-bottom: 1.5rem; max-width: 60ch; color: var(--color-text-secondary); font-size: 1.125rem; }
-        .about-skills h3 { font-size: 1.25rem; font-weight: 600; margin-bottom: 1.5rem; }
-        .skills-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 2.5rem; }
-        .skills-columns ul { list-style: none; font-size: 0.95rem; }
-        .skills-columns li { margin-bottom: 0.5rem; color: var(--color-text-secondary); }
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
 
-        /* --- 6. WORK SECTIONS --- */
-        .work-uiux { background-color: var(--color-surface); }
-        .work-grid { grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2.5rem; }
+        .section-header .label {
+            color: var(--accent);
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ABOUT SECTION */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: start;
+        }
+
+        .about-content p {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .skills-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 3rem;
+        }
+
+        .skills-section h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--accent);
+        }
+
+        .skills-grid {
+            display: grid;
+            gap: 2.5rem;
+        }
+
+        .skill-category h4 {
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .skill-category ul {
+            list-style: none;
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .skill-category li {
+            color: var(--text-secondary);
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .skill-category li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        /* PROJECTS */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+        }
+
         .project-card {
-            background-color: var(--color-background); border-radius: 8px; overflow: hidden; border: 1px solid var(--color-border);
-            text-decoration: none; color: var(--color-text-primary); cursor: pointer;
-            transition: transform 0.3s var(--transition-cubic), box-shadow 0.3s var(--transition-cubic);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s var(--transition);
+            cursor: pointer;
         }
-        .project-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1); }
-        .project-image { height: 250px; background-color: var(--color-surface); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-        .project-image .arrow { position: absolute; right: 1rem; top: 1rem; background-color: white; padding: 0.5rem; border-radius: 50%; opacity: 0; transform: scale(0.8) rotate(-45deg); transition: all 0.3s var(--transition-cubic); }
-        .project-card:hover .arrow { opacity: 1; transform: scale(1) rotate(0); }
-        .project-content { padding: 1.5rem; }
-        .project-title { font-size: 1.5rem; font-weight: 600; }
-        .project-description { color: var(--color-text-secondary); margin-top: 0.5rem; }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px var(--shadow);
+        }
+
+        .project-image {
+            height: 280px;
+            background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s var(--transition);
+        }
+
+        .project-card:hover .project-image::before {
+            opacity: 1;
+        }
+
+        .project-icon {
+            font-size: 4rem;
+            opacity: 0.3;
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-content h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .project-content p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .tag {
+            padding: 0.5rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* CONTACT */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .contact-info h3 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-info p {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .contact-methods {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            transition: all 0.3s var(--transition);
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .contact-method:hover {
+            border-color: var(--accent);
+            background: var(--bg-tertiary);
+            transform: translateX(10px);
+        }
+
+        .contact-method span:first-child {
+            font-size: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.3s var(--transition);
+        }
+
+        .social-link:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            transform: translateY(-5px);
+        }
         
-        .graphic-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-        .graphic-item {
-            aspect-ratio: 4 / 3; background-color: var(--color-surface); border: 1px solid var(--color-border);
-            border-radius: 8px; display: flex; align-items: center; justify-content: center;
-            color: var(--color-text-secondary); font-weight: 500;
+        /* Scroll container */
+	.portfolio-slider {
+		    overflow: hidden;  /* hides scrollbar completely */
+		    position: relative;
+		}
+
+		.portfolio-track {
+		    display: flex;
+		    gap: 3rem;
+		    width: max-content;
+		    animation: autoScroll 25s linear infinite;
+		}
+
+		/* adjusts based on screen width — speed feels natural */
+		@keyframes autoScroll {
+		    from {
+			transform: translateX(0);
+		    }
+		    to {
+			transform: translateX(-50%);
+		    }
+		}
+
+		/* Clone items to avoid blank space while looping */
+		.portfolio-track > .portfolio-item {
+		    flex-shrink: 0;
+		}
+
+	/* Horizontal row of items */
+	.portfolio-track {
+	    display: flex;
+	    gap: 3rem;
+	    width: max-content;
+	    padding-top: 10px;
+	}
+
+	/* Card style */
+	.portfolio-item {
+	    width: 400px;
+	    height: 500px;
+	    border-radius: 20px;
+	    overflow: hidden;
+	    background: var(--bg-secondary);
+	    border: 1px solid var(--border);
+	    transition: all 0.4s var(--transition);
+	    cursor: pointer;
+	}
+
+	/* Hover effect */
+	.portfolio-item:hover {
+	    transform: translateY(-10px);
+	    border-color: var(--accent);
+	    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 
+		        0 0 40px var(--shadow);
+	}
+
+	/* Image container */
+	.portfolio-image {
+	    height: 100%;
+	    width: 100%;
+	    position: relative;
+	    overflow: hidden;
+	    background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
+	}
+
+	/* Hover highlight same as old design but isolated */
+	.portfolio-image::before {
+	    content: '';
+	    position: absolute;
+	    inset: 0;
+	    background: radial-gradient(circle, rgba(99,102,241,0.3), transparent 70%);
+	    opacity: 0;
+	    transition: opacity 0.4s var(--transition);
+	}
+
+	.portfolio-item:hover .portfolio-image::before {
+	    opacity: 1;
+	}
+
+	/* Image styling */
+	.portfolio-image img {
+	    width: 100%;
+	    height: 100%;
+	    object-fit: cover;
+	}
+
+
+        
+        
+        .logo {
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    height: 50px; /* adjust based on your navbar design */
+	}
+
+	.logo img {
+	    height: 100%;
+	    object-fit: contain;
+	    filter: drop-shadow(0px 0px 6px rgba(139, 92, 246, 0.4));
+	    transition: transform 0.3s ease, filter 0.3s ease;
+	}
+
+	/* Hover effect */
+	.logo img:hover {
+	    transform: scale(1.08);
+	    filter: drop-shadow(0px 0px 10px rgba(139, 92, 246, 0.6));
+	}
+        
+        
+        /* FOOTER */
+        footer {
+            padding: 3rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            color: var(--text-tertiary);
         }
 
-        /* --- 7. CONTACT SECTION --- */
-        .contact { background-color: var(--color-surface); }
-        .contact-grid { grid-template-columns: 1fr 1.5fr; gap: 5rem; align-items: center; }
-        .contact-info p { font-size: 1.125rem; color: var(--color-text-secondary); max-width: 45ch; }
-        .contact-socials { display: flex; gap: 1.5rem; margin-top: 2rem; }
-        .form-group { margin-bottom: 1.5rem; }
-        .form-label { display: block; font-weight: 500; margin-bottom: 0.5rem; }
-        .form-input, .form-textarea {
-            width: 100%; padding: 0.8rem 1rem; border: 1px solid var(--color-border); border-radius: 6px;
-            font-family: var(--font-primary); font-size: 1rem; background-color: var(--color-background); transition: all 0.2s ease;
-        }
-        .form-input:focus, .form-textarea:focus { border-color: var(--color-accent); background-color: var(--color-background); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); outline: none; }
-        .form-textarea { min-height: 120px; resize: vertical; }
-
-        /* --- 8. FOOTER --- */
-        footer { padding: 4rem 0; border-top: 1px solid var(--color-border); }
-        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; text-align: left; }
-        .footer-col h4 { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 0.05em; }
-        .footer-col a, .footer-col span {
-            display: block; text-decoration: none; color: var(--color-text-secondary);
-            margin-bottom: 0.5rem; transition: color 0.2s ease;
-        }
-        .footer-col a:hover { color: var(--color-text-primary); }
-        .footer-copyright { text-align: center; margin-top: 4rem; font-size: 0.9rem; color: #9CA3AF; }
-
-        /* --- 9. MODAL & BACK-TO-TOP --- */
+        /* MODAL */
         .modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            z-index: 2000; display: none; align-items: center; justify-content: center; padding: 1rem;
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            padding: 2rem;
+            overflow-y: auto;
         }
-        .modal.active { display: flex; }
+
+        .modal.active { display: flex; align-items: center; justify-content: center; }
+
         .modal-content {
-            background: var(--color-background); border-radius: 12px; border: 1px solid var(--color-border);
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); max-width: 900px; width: 100%;
-            max-height: 90vh; overflow-y: auto; padding: 3rem; position: relative;
-            animation: scale-up 0.4s var(--transition-cubic);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            max-width: 900px;
+            width: 100%;
+            padding: 3rem;
+            position: relative;
+            animation: slideUp 0.4s var(--transition);
         }
-        @keyframes scale-up { from { transform: scale(0.95) translateY(10px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
-        .modal-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; cursor: pointer; color: var(--color-text-secondary); }
-        .case-study h2 { font-size: clamp(1.75rem, 5vw, 2.5rem); letter-spacing: -0.02em; margin-bottom: 2rem; }
-        .case-study .info-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem; padding-bottom: 2rem; margin-bottom: 2rem; border-bottom: 1px solid var(--color-border);
-        }
-        .case-study h3 { font-size: 1.125rem; margin-bottom: 0.5rem; }
-        .case-study p { color: var(--color-text-secondary); line-height: 1.6; }
-        
-        .back-to-top {
-            position: fixed; bottom: 1.5rem; right: 1.5rem; width: 48px; height: 48px; background-color: var(--color-background);
-            border: 1px solid var(--color-border); border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 999; opacity: 0; visibility: hidden; transform: translateY(20px);
-            transition: all 0.3s var(--transition-cubic); box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        .back-to-top.visible { opacity: 1; visibility: visible; transform: translateY(0); }
-        .back-to-top:hover { border-color: var(--color-text-primary); transform: translateY(-3px); }
 
-        /* --- 10. SCROLL-BASED ANIMATIONS --- */
-        [data-animate] { opacity: 0; transform: translateY(30px); transition: opacity 0.8s var(--transition-cubic), transform 0.8s var(--transition-cubic); }
-        [data-animate].visible { opacity: 1; transform: translateY(0); }
-        [data-animate].stagger-children.visible > * { transition-delay: calc(var(--stagger-order) * 100ms); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        /* --- 11. RESPONSIVE --- */
+        .modal-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s var(--transition);
+        }
+
+        .modal-close:hover {
+            background: var(--bg-tertiary);
+            transform: rotate(90deg);
+        }
+
+        .modal-body h2 {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .modal-body p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 1.125rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .hero-content, .about-grid, .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .image-wrapper {
+                width: 300px;
+                height: 400px;
+                margin: 0 auto;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         @media (max-width: 768px) {
-            .section { padding: 5rem 0; }
-            .desktop-nav { display: none; }
-            .menu-toggle { display: block; }
-            .hero-grid { grid-template-columns: 1fr; text-align: center; }
-            .hero-ctas { justify-content: center; }
-            .hero-image-wrapper { justify-self: center; margin-top: 2rem; }
-            .about-grid, .contact-grid, .footer-grid { grid-template-columns: 1fr; gap: 3rem; }
-            .about-skills { margin-top: 3rem; }
+            .nav-container {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            section {
+                padding: 5rem 1.5rem;
+            }
+
+            .hero {
+                padding: 6rem 1.5rem 3rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
-
-    <!-- SVG Icon Definitions -->
-    <svg width="0" height="0" style="position:absolute; overflow:hidden;">
-        <symbol id="icon-linkedin" viewBox="0 0 24 24"><path fill="currentColor" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></symbol>
-        <symbol id="icon-behance" viewBox="0 0 24 24"><path fill="currentColor" d="M22 6h-5v-1c0-1.104-.896-2-2-2h-6c-1.104 0-2 .896-2 2v1h-5c-1.104 0-2 .896-2 2v13c0 1.104.896 2 2 2h20c1.104 0 2-.896 2-2v-13c0-1.104-.896-2-2-2zm-12-1c0-.552.448-1 1-1h6c.552 0 1 .448 1 1v1h-8v-1zm-8 4h3.5v2h-3.5v-2zm3.5 3h-3.5v2h3.5v-2zm-3.5 5.5c0-.276.224-.5.5-.5h2.5v1h-3v-.5zm16.5 1.5h-11v-2h11v2zm0-3h-11v-2h11v2zm0-3h-11v-2h11v2z"/></symbol>
-        <symbol id="icon-arrow-up" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></symbol>
-        <symbol id="icon-arrow-right" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></symbol>
-    </svg>
-
-    <nav class="main-nav" id="main-nav">
-        <div class="container nav-container">
-            <div class="nav-logo"><a href="#">Venkatesh Bonam</a>
-                <!-- <img src="Photos/White.png" alt="Venkatesh Bonam – UI/UX designer logo" class="rounded-full w-48 shadow-lg" /> -->
-
-            </div>
-            <div class="desktop-nav">
-                <ul class="nav-links">
-                    <li><a href="#work-uiux" class="active">UI/UX Work</a></li>
-                    <li><a href="#work-graphic">Graphic Design</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </div>
-            <button class="menu-toggle" id="menu-toggle" aria-label="Open Menu">
-                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+		    <img src="images/Black.png" alt="VB Logo" />
+		</div>
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#work">Work</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
             </button>
         </div>
     </nav>
 
-    <div class="mobile-nav" id="mobile-nav">
-        <ul class="nav-links">
-            <li><a href="#work-uiux">UI/UX Work</a></li>
-            <li><a href="#work-graphic">Graphic Design</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="subtitle">UI/UX & Graphic Designer</div>
+                <h1>Crafting Digital Experiences That Matter</h1>
+                <p>I transform complex challenges into intuitive, user-centered designs. With 2+ years of experience across AI, e-commerce, and industrial tech, I create impactful digital solutions.</p>
+                <div class="cta-buttons">
+                    <a href="#work" class="btn btn-primary">View My Work →</a>
+                    <a href="#contact" class="btn btn-secondary">Let's Talk</a>
+                    <a href="https://drive.google.com/file/d/1qhxp2maYpKc5U_frNv0zTEepRN_tCd32/view?usp=sharing"
+			   class="btn btn-secondary"
+			   target="_blank">
+			   Resume
+			</a>
+
+                </div>
+            </div>
+            <div class="hero-image">
+		    <div class="image-wrapper">
+			<img src="images/profile.png" alt="My Portfolio Photo" class="hero-photo" />
+		    </div>
+		</div>
+
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="section-header">
+            <div class="label">About Me</div>
+            <h2>Designer & Problem Solver</h2>
+            <p>Passionate about creating meaningful digital experiences through research-driven design</p>
+        </div>
+        <div class="about-grid">
+            <div class="about-content">
+                <p>Hi, I'm Venkatesh Bonam. As a results-oriented designer, I specialize in translating complex user needs and business goals into intuitive, user-centered interfaces.</p>
+                <p>With two years of experience across diverse sectors like AI, e-commerce, and industrial tech, I thrive in fast-paced environments where I can contribute to innovative and impactful products.</p>
+                <p>My approach combines thorough user research, strategic thinking, and meticulous attention to detail to deliver designs that not only look beautiful but solve real problems.</p>
+            </div>
+            <div class="skills-section">
+                <h3>Expertise & Tools</h3>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h4>Core Skills</h4>
+                        <ul>
+                            <li>User Research & Analysis</li>
+                            <li>Information Architecture</li>
+                            <li>Wireframing & Prototyping</li>
+                            <li>Design Systems</li>
+                            <li>Usability Testing</li>
+                            <li>A/B Testing</li>
+                        </ul>
+                    </div>
+                    <div class="skill-category">
+                        <h4>Design Tools</h4>
+                        <ul>
+                            <li>Figma & FigJam</li>
+                            <li>Adobe Creative Suite</li>
+                            <li>Canva & Capcut</li>
+                            <li>HTML & CSS</li>
+                            <li>VS Code</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="work">
+        <div class="section-header">
+            <div class="label">Portfolio</div>
+            <h2>Featured Projects</h2>
+            <p>A selection of my recent UI/UX design work</p>
+        </div>
+        <div class="projects-grid">
+            <div class="project-card" data-project="ai-chatbot">
+                <div class="project-image">
+                    <div class="project-icon">🤖</div>
+                </div>
+                <div class="project-content">
+                    <h3>AI Chatbot Interface</h3>
+                    <p>Designed an AI-powered chatbot that provides responses with cited sources, building user trust through transparent information delivery.</p>
+                    <div class="project-tags">
+                        <span class="tag">UI Design</span>
+                        <span class="tag">AI/ML</span>
+                        <span class="tag">Research</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-project="magnet-control">
+                <div class="project-image">
+                    <div class="project-icon">📱</div>
+                </div>
+                <div class="project-content">
+                    <h3>Industrial Control System</h3>
+                    <p>Mobile app for controlling industrial crane magnets via Bluetooth, enabling precise amplitude and voltage adjustments for heavy-weight operations.</p>
+                    <div class="project-tags">
+                        <span class="tag">Mobile Design</span>
+                        <span class="tag">IoT</span>
+                        <span class="tag">Industrial</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card" data-project="fitness-app">
+                <div class="project-image">
+                    <div class="project-icon">💪</div>
+                </div>
+                <div class="project-content">
+                    <h3>Personalized Fitness App</h3>
+                    <p>Created a fitness application that personalizes workout plans based on user demographics, enabling workout tracking and trainer connections.</p>
+                    <div class="project-tags">
+                        <span class="tag">Mobile App</span>
+                        <span class="tag">Health & Fitness</span>
+                        <span class="tag">UX Research</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    
+    <section id="work-2">
+    <div class="section-header">
+        <div class="label">My Achievements</div>
+        <h2>Projects</h2>
+        <p>A selection of my recent work</p>
     </div>
 
-    <main>
-        <!-- HERO -->
-        <section id="home" class="hero">
-            <div class="container hero-grid">
-                <div class="hero-text" data-animate data-stagger-children>
-                    <p class="role" style="--stagger-order: 1;">UI/UX & Graphic Designer</p>
-                    <h1 style="--stagger-order: 2;">I design clear and effective digital experiences that respect the user.</h1>
-                    <div class="hero-ctas" style="--stagger-order: 3;">
-                        <a href="#work-uiux" class="btn btn-primary">View Work</a>
-                        <a href="#" class="btn btn-secondary">Download Resume</a>
-                    </div>
-                </div>
-                <div class="hero-image-wrapper">
-                    <div class="hero-image" data-animate>
-                        <img src="Photos/profile3.png" alt="Venkatesh Bonam profile photo">
-                    </div>
-                </div>
-            </div>
-        </section>
+    <div class="portfolio-slider">
+    <div class="project-grid">
+        <div class="portfolio-track">
 
-        <!-- ABOUT -->
-        <section id="about" class="section about">
-            <div class="container">
-                <div class="section-header"><div class="subtitle">Introduction</div><h2 class="title">Designer & Problem-Solver</h2></div>
-                <div class="grid about-grid" data-animate>
-                    <div class="about-bio">
-                        <p>Hi, I'm Venkatesh Bonam. As a results-oriented designer, I specialize in translating complex user needs and business goals into intuitive, user-centered interfaces. With two years of experience across diverse sectors like AI, e-commerce, and industrial tech, I thrive in fast-paced environments where I can contribute to innovative and impactful products.</p>
+            <div class="portfolio-item">
+                <div class="portfolio-image">
+                    <img src="images/mobile_image.png" alt="Project 1" />
+                </div>
+            </div>
+
+            <div class="portfolio-item">
+                <div class="portfolio-image">
+                    <img src="images/mobile_image.png" alt="Project 2" />
+                </div>
+            </div>
+
+            <div class="portfolio-item">
+                <div class="portfolio-image">
+                    <img src="images/mobile_image.png" alt="Project 3" />
+                </div>
+            </div>
+            <div class="portfolio-item">
+                <div class="portfolio-image">
+                    <img src="images/mobile_image.png" alt="Project 4" />
+                </div>
+            </div>
+
+            <div class="portfolio-item">
+                <div class="portfolio-image">
+                    <img src="images/mobile_image.png" alt="Project 5" />
+                </div>
+            </div>
+            <div class="portfolio-item">
+                <div class="portfolio-image">
+                    <img src="images/mobile_image.png" alt="Project 6" />
+                </div>
+            </div>
+
+            <div class="portfolio-item">
+                <div class="portfolio-image">
+                    <img src="images/mobile_image.png" alt="Project 7" />
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+    <section id="contact">
+        <div class="section-header">
+            <div class="label">Get In Touch</div>
+            <h2>Let's Create Together</h2>
+            <p>Available for freelance projects and full-time opportunities</p>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h3>Ready to start your project?</h3>
+                <p>I'm always interested in hearing about new projects and opportunities. Whether you have a question or just want to say hi, feel free to reach out.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link" aria-label="LinkedIn">in</a>
+                    <a href="#" class="social-link" aria-label="Behance">Be</a>
+                    <a href="#" class="social-link" aria-label="Email">@</a>
+                </div>
+            </div>
+            <div class="contact-methods">
+                <a href="mailto:venkateshbonam.uxui@gmail.com" class="contact-method">
+                    <span>📧</span>
+                    <div>
+                        <strong>Email</strong><br>
+                        <span style="color: var(--text-secondary);">venkateshbonam.uxui@gmail.com</span>
                     </div>
-                    <div class="about-skills">
-                        <div class="skills-columns">
-                            <div>
-                                <h3>Core Skills</h3>
-                                <ul>
-                                    <li>User Research & Analysis</li>
-                                    <li>Persona & Competitive Analysis</li>
-                                    <li>Information Architecture</li>
-                                    <li>User Flows & Design Systems</li>
-                                    <li>Wireframing & Prototyping</li>
-                                    <li>Usability & A/B Testing</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <h3>Tools & Software</h3>
-                                <ul>
-                                    <li>Figma & FigJam</li>
-                                    <li>Adobe XD, Illustrator, Photoshop</li>
-                                    <li>Canva, Capcut</li>
-                                    <li>HTML & CSS Basics</li>
-                                    <li>VS Code, Slack</li>
-                                    <li>Microsoft Office</li>
-                                </ul>
-                            </div>
-                        </div>
+                </a>
+                <a href="tel:+918074044162" class="contact-method">
+                    <span>📞</span>
+                    <div>
+                        <strong>Phone</strong><br>
+                        <span style="color: var(--text-secondary);">+91 8074044162</span>
+                    </div>
+                </a>
+                <div class="contact-method">
+                    <span>📍</span>
+                    <div>
+                        <strong>Location</strong><br>
+                        <span style="color: var(--text-secondary);">Hyderabad, India</span>
                     </div>
                 </div>
             </div>
-        </section>
-        
-        <!-- UI/UX WORK -->
-        <section id="work-uiux" class="section work-uiux">
-            <div class="container">
-                <div class="section-header"><div class="subtitle">Portfolio</div><h2 class="title">UI/UX Design Projects</h2></div>
-                <div class="grid work-grid" data-animate data-stagger-children>
-                    <div class="project-card" data-click="open-case" data-project="ai-chatbot" style="--stagger-order: 1;">
-                        <div class="project-image"><span class="arrow"><svg class="icon"><use href="#icon-arrow-right"></use></svg></span></div>
-                        <div class="project-content">
-                            <h3 class="project-title">AI Chatbot</h3><p class="project-description">An AI-powered chatbot that provides responses with cited sources.</p>
-                        </div>
-                    </div>
-                    <div class="project-card" data-click="open-case" data-project="magnet-control" style="--stagger-order: 2;">
-                        <div class="project-image"><span class="arrow"><svg class="icon"><use href="#icon-arrow-right"></use></svg></span></div>
-                        <div class="project-content">
-                            <h3 class="project-title">Magnet Control System</h3><p class="project-description">A mobile app for precise control of industrial crane magnets.</p>
-                        </div>
-                    </div>
-                    <div class="project-card" data-click="open-case" data-project="fitness-app" style="--stagger-order: 3;">
-                        <div class="project-image"><span class="arrow"><svg class="icon"><use href="#icon-arrow-right"></use></svg></span></div>
-                        <div class="project-content">
-                            <h3 class="project-title">Fitness App</h3><p class="project-description">Personalized workout plans and trainer connections.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- GRAPHIC DESIGN WORK -->
-        <section id="work-graphic" class="section work-graphic">
-            <div class="container">
-                <div class="section-header"><div class="subtitle">Portfolio</div><h2 class="title">Graphic Design & Branding</h2></div>
-                <div class="grid graphic-grid" data-animate data-stagger-children>
-                    <div class="graphic-item" style="--stagger-order: 1;">Event Posters</div>
-                    <div class="graphic-item" style="--stagger-order: 2;">Internal Engagement Flyers</div>
-                    <div class="graphic-item" style="--stagger-order: 3;">Digital Marketing Assets</div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- CONTACT -->
-        <section id="contact" class="section contact">
-            <div class="container">
-                 <div class="section-header"><div class="subtitle">Have a project?</div><h2 class="title">Let's Create Together</h2></div>
-                <div class="grid contact-grid" data-animate>
-                    <div class="contact-info">
-                        <h3>Get in Touch</h3>
-                        <p>I'm available for freelance projects and open to new full-time opportunities. If you have a project in mind or just want to discuss design, I'd love to hear from you.</p>
-                    </div>
-                    <!-- <form class="contact-form">
-                        <!-- Form remains the same -->
-                        <!-- <button type="submit" class="btn btn-primary">Send Message</button>
-                    </form> --> 
-                </div>
-            </div> -->
-        </section>
-    </main>
+        </div>
+    </section>
 
     <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h4>Contact</h4>
-                    <a href="mailto:venkateshbonam.uxui@gmail.com">venkateshbonam.uxui@gmail.com</a>
-                    <span>+91 8074044162</span>
-                </div>
-                <div class="footer-col">
-                    <h4>Follow</h4>
-                    <a href="#" target="_blank">LinkedIn</a>
-                    <a href="#" target="_blank">Behance</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Education</h4>
-                    <span>B.Sc (MECS) - 2021</span>
-                    <span>Adikavi Nannaya University</span>
-                </div>
-                <div class="footer-col">
-                    <h4>Languages</h4>
-                    <span>English</span>
-                    <span>Telugu</span>
-                </div>
-            </div>
-            <p class="footer-copyright">© 2025 Venkatesh Bonam</p>
-        </div>
+        <p>© 2025 Venkatesh Bonam. Designed with passion and precision.</p>
     </footer>
-    
-    <button class="back-to-top" id="back-to-top" aria-label="Back to top">
-        <svg class="icon"><use href="#icon-arrow-up"></use></svg>
-    </button>
-    
-    <div class="modal" id="project-modal" aria-modal="true" role="dialog">
+
+    <div class="modal" id="modal">
         <div class="modal-content">
-            <button class="modal-close" aria-label="Close modal">×</button>
-            <div class="case-study" id="modal-body"></div>
+            <button class="modal-close">×</button>
+            <div class="modal-body" id="modal-body"></div>
         </div>
     </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    // --- All JS logic from previous version is still valid ---
-    // (Nav, Mobile Menu, Back to Top, Animations, etc.)
-    const modal = document.getElementById('project-modal');
-    const modalBody = document.getElementById('modal-body');
-    const modalCloseBtn = modal.querySelector('.modal-close');
+    <script>
+        const slider = document.querySelector(".portfolio-slider");
+	let isDown = false;
+	let startX;
+	let scrollLeft;
 
-    // --- UPDATED PROJECT DATA FROM RESUME ---
-    const projectData = {
-        'ai-chatbot': {
-            title: 'AI Chatbot for Cited Responses',
-            description: 'Developed an AI-powered chatbot that provides responses with cited sources based on user prompts, focusing on building user trust and information reliability.'
-        },
-        'magnet-control': {
-            title: 'Magnet Control System Mobile App',
-            description: 'Designed a mobile app for controlling industrial crane magnets via Bluetooth. The UI allows users to precisely adjust amplitude (up to 50A) and voltage (up to 400V) for heavy-weight lifting operations.'
-        },
-        'fitness-app': {
-            title: 'Personalized Fitness Application',
-            description: 'Created a fitness app that personalizes workout plans based on user demographics and health preferences. It allows users to track workouts and connect with trainers for expert guidance.'
-        }
-        // Add more project data here as needed
-    };
-    
-    document.querySelectorAll('[data-click="open-case"]').forEach(card => {
-        card.addEventListener('click', (e) => {
-            e.preventDefault();
-            const projectId = card.dataset.project;
-            const data = projectData[projectId];
+	slider.addEventListener("mousedown", e => {
+	    isDown = true;
+	    startX = e.pageX - slider.offsetLeft;
+	    scrollLeft = slider.scrollLeft;
+	});
 
-            if (data) {
-                modalBody.innerHTML = `
-                    <h2>${data.title}</h2>
-                    <div class="info-grid">
-                        <div>
-                            <h3>Project Overview</h3>
-                            <p>${data.description}</p>
+	slider.addEventListener("mouseup", () => isDown = false);
+	slider.addEventListener("mouseleave", () => isDown = false);
+
+	slider.addEventListener("mousemove", e => {
+	    if (!isDown) return;
+	    e.preventDefault();
+	    slider.scrollLeft = scrollLeft - (e.pageX - startX);
+	});
+        const projectData = {
+            'ai-chatbot': {
+                title: 'AI Chatbot for Cited Responses',
+                description: 'Developed an AI-powered chatbot that provides responses with cited sources based on user prompts. The focus was on building user trust through transparent information delivery and creating an intuitive interface for complex AI interactions. Key features include real-time response generation, source attribution, and conversation management.',
+                role: 'Lead UI/UX Designer',
+                duration: '3 months',
+                tools: 'Figma, Adobe XD, User Testing'
+            },
+            'magnet-control': {
+                title: 'Industrial Magnet Control System',
+                description: 'Designed a mobile application for controlling industrial crane magnets via Bluetooth connection. The interface allows operators to precisely adjust amplitude (up to 50A) and voltage (up to 400V) for heavy-weight lifting operations. Priority was given to safety, precision, and real-time feedback in challenging industrial environments.',
+                role: 'UI/UX Designer',
+                duration: '4 months',
+                tools: 'Figma, Prototyping, User Research'
+            },
+            'fitness-app': {
+                title: 'Personalized Fitness Application',
+                description: 'Created a comprehensive fitness app that personalizes workout plans based on user demographics and health preferences. The app enables users to track their workouts, monitor progress, and connect with professional trainers for expert guidance. The design emphasizes motivation, ease of use, and data visualization.',
+                role: 'UI/UX Designer & Researcher',
+                duration: '5 months',
+                tools: 'Figma, User Research, A/B Testing'
+            }
+        };
+
+        const modal = document.getElementById('modal');
+        const modalBody = document.getElementById('modal-body');
+        const modalClose = modal.querySelector('.modal-close');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const projectId = card.dataset.project;
+                const data = projectData[projectId];
+                if (data) {
+                    modalBody.innerHTML = `
+                        <h2>${data.title}</h2>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin: 2rem 0; padding: 2rem 0; border-bottom: 1px solid var(--border);">
+                            <div>
+                                <strong style="color: var(--accent);">Role</strong><br>
+                                <span style="color: var(--text-secondary);">${data.role}</span>
+                            </div>
+                            <div>
+                                <strong style="color: var(--accent);">Duration</strong><br>
+                                <span style="color: var(--text-secondary);">${data.duration}</span>
+                            </div>
+                            <div>
+                                <strong style="color: var(--accent);">Tools</strong><br>
+                                <span style="color: var(--text-secondary);">${data.tools}</span>
+                            </div>
                         </div>
-                    </div>
-                    <!-- You can add more sections like "My Role", "Process", etc. here -->
-                `;
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
+                        <p>${data.description}</p>
+                    `;
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
         });
-    });
 
-    function closeModal() {
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
-    }
-
-    modalCloseBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
-    
-    // All other JS (nav, animations, etc.) from previous version remains the same
-    // and would be included here. Keeping it concise for this example.
-    const nav = document.getElementById('main-nav');
-    const menuToggle = document.getElementById('menu-toggle');
-    const mobileNav = document.getElementById('mobile-nav');
-    const backToTopBtn = document.getElementById('back-to-top');
-    const heroText = document.querySelector('.hero-text');
-    const heroImage = document.querySelector('.hero-image');
-
-    const animatedElements = document.querySelectorAll('[data-animate]');
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) entry.target.classList.add('visible');
-        });
-    }, { threshold: 0.1 });
-    animatedElements.forEach(el => observer.observe(el));
-
-    if (heroText) heroText.classList.add('visible');
-    if (heroImage) heroImage.classList.add('visible');
-
-    window.addEventListener('scroll', () => {
-        nav.classList.toggle('scrolled', window.scrollY > 20);
-        backToTopBtn.classList.toggle('visible', window.scrollY > 300);
-        
-        let currentSection = '';
-        document.querySelectorAll('section[id]').forEach(section => {
-            if (window.scrollY >= section.offsetTop - nav.offsetHeight) {
-                currentSection = section.getAttribute('id');
-            }
-        });
-        document.querySelectorAll('.desktop-nav a, .mobile-nav a').forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${currentSection}`) {
-                link.classList.add('active');
-            }
-        });
-    });
-
-    menuToggle.addEventListener('click', () => {
-        document.body.classList.toggle('nav-open');
-        menuToggle.classList.toggle('open');
-        mobileNav.classList.toggle('open');
-    });
-    mobileNav.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            document.body.classList.remove('nav-open');
-            menuToggle.classList.remove('open');
-            mobileNav.classList.remove('open');
-        });
-    });
-
-    backToTopBtn.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-});
-</script>
-
-</body>
-</html>F
+        modalClose.

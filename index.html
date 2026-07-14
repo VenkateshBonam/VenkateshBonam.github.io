@@ -196,7 +196,26 @@ nav{position:fixed;top:0;width:100%;z-index:1000;background:rgba(6,6,14,.85);bac
 .tl-buls li::before{content:'›';color:var(--p);flex-shrink:0;font-weight:700;margin-top:.05rem}
 .tl-buls li strong{color:var(--ink);font-weight:500}
 .tl-chips{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.85rem}
-.tl-chip{font-size:.65rem;padding:.2rem .6rem;border-radius:20px;background:var(--surface3);border:1px solid var(--line);color:var(--ink3)}
+/* .tl-chip{font-size:.65rem;padding:.2rem .6rem;border-radius:20px;background:var(--surface3);border:1px solid var(--line);color:var(--ink3)} */
+.tl-chip {
+  font-size: .65rem;
+  padding: .2rem .6rem;
+  border-radius: 20px;
+  background: var(--surface3);
+  border: 1px solid var(--line);
+  color: var(--ink3);
+  display: inline-block; /* Ensures the lift transform works correctly */
+  cursor: pointer;
+  transition: transform 0.25s var(--ease), color 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+/* New hover state */
+.tl-chip:hover {
+  color: #ffffff; /* Forces text to pure white */
+  transform: translateY(-2px); /* Gives it that subtle popup lift */
+  border-color: var(--line-hi); /* Optional: glows up the border matching the rest of your portfolio */
+  box-shadow: 0 4px 12px rgba(108, 99, 255, 0.15); /* Adds a faint thematic purple/dark shadow */
+}
 
 /* PROCESS */
 .proc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem}

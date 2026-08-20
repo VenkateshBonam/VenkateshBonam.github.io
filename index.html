@@ -25,8 +25,8 @@
       --accent2-dim: rgba(0,212,170,0.1);
       --text1: #EEEEFF;
       --text2: #8888B0;
-      --text3: #44445E;
-      --radius: 16px;
+      --text3: #66668a; /* Adjusted for WCAG AA Contrast */
+      --radius: 18px; /* Slightly more modern rounding */
       --ease: cubic-bezier(0.4,0,0.2,1);
       --font-display: 'Syne', sans-serif;
       --font-body: 'DM Sans', sans-serif;
@@ -43,6 +43,14 @@
       overflow-x: hidden;
       cursor: none;
     }
+    
+    /* Global Focus States for Accessibility */
+    *:focus-visible {
+      outline: 2px solid var(--accent2);
+      outline-offset: 4px;
+      border-radius: 4px;
+    }
+
     @media(max-width:768px){ body { cursor:auto; } }
 
     /* ─── CURSOR ───────────────────────────────────────────── */
@@ -173,6 +181,9 @@
     #hero {
       min-height:100vh; display:flex; align-items:center;
       padding:9rem 2.5rem 5rem; position:relative; overflow:hidden;
+      background-image: 
+        radial-gradient(circle at 1px 1px, rgba(255,255,255,0.025) 1px, transparent 0);
+      background-size: 40px 40px; /* Subtle grid texture */
     }
     #hero::before {
       content:''; position:absolute; top:-20%; right:-10%;
@@ -194,7 +205,6 @@
       max-width:1280px; margin:0 auto; position:relative; z-index:2;
       display:grid; grid-template-columns:1.2fr 1fr; gap:5rem; align-items:center;
     }
-    /* eyebrow */
     .hero-eyebrow {
       display:inline-flex; align-items:center; gap:10px;
       padding:.45rem 1rem; border-radius:50px;
@@ -207,7 +217,6 @@
       animation:blink 2.2s infinite;
     }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
-    /* headline */
     .hero-h1 {
       font-family:var(--font-display);
       font-size:clamp(2.8rem,5vw,4.8rem);
@@ -223,7 +232,6 @@
       max-width:520px; margin-bottom:2.25rem;
     }
     .hero-btns { display:flex; gap:1rem; flex-wrap:wrap; }
-    /* stats */
     .hero-stats {
       display:flex; gap:2.5rem; margin-top:2.75rem;
       padding-top:2rem; border-top:1px solid var(--border);
@@ -235,7 +243,6 @@
       line-height:1;
     }
     .stat-label { font-size:.78rem; color:var(--text2); margin-top:5px; }
-    /* hero visual */
     .hero-visual { position:relative; display:flex; justify-content:center; }
     .photo-frame {
       width:370px; height:470px; border-radius:24px; overflow:hidden;
@@ -249,7 +256,6 @@
       border-radius:26px; z-index:-1; opacity:.4; filter:blur(20px);
     }
     .photo-frame img { width:100%; height:100%; object-fit:cover; display:block; }
-    /* floating badges */
     .float-badge {
       position:absolute; background:rgba(14,14,28,.92);
       border:1px solid var(--border); border-radius:14px;
@@ -264,7 +270,6 @@
     .float-badge .icon { font-size:1.3rem; }
     .fl-text strong { display:block; color:var(--text1); font-size:.82rem; font-weight:600; }
     .fl-text span { font-size:.72rem; color:var(--text2); }
-    /* scroll indicator */
     .scroll-hint {
       position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%);
       display:flex; flex-direction:column; align-items:center; gap:6px;
@@ -291,12 +296,16 @@
     }
     @keyframes stripScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
     .domain-item {
-      display:inline-flex; align-items:center; gap:.5rem;
-      padding:0 2rem; font-size:.8rem; font-weight:500;
-      color:var(--text3); white-space:nowrap; letter-spacing:.04em;
+      display: inline-flex; align-items: center;
+      padding: 0 1.5rem; font-size: .8rem; font-weight: 500;
+      color: var(--text3); white-space: nowrap; letter-spacing: .04em;
+      position: relative;
     }
-    .domain-item .d-dot { width:4px; height:4px; border-radius:50%; background:var(--text3); }
-    .domain-item.hi { color:var(--text2); }
+    .domain-item:not(:last-child)::after {
+      content: ''; margin-left: 1.5rem; width: 4px; height: 4px;
+      border-radius: 50%; background: currentColor; opacity: 0.6;
+    }
+    .domain-item.hi { color: var(--text2); }
 
     /* ─── ABOUT ────────────────────────────────────────────── */
     .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:start; }
@@ -334,10 +343,11 @@
       transition:transform .35s var(--ease),border-color .35s,box-shadow .35s;
       cursor:pointer; position:relative;
     }
-    .project-card:hover {
+    .project-card:hover, .project-card:focus-visible {
       transform:translateY(-7px);
       border-color:var(--border-hi);
       box-shadow:0 24px 60px rgba(0,0,0,.45),0 0 40px rgba(108,99,255,.08);
+      outline: none; /* Replaced by global focus-visible */
     }
     .card-img {
       height:210px; background:var(--bg2);
@@ -374,7 +384,6 @@
       color:var(--text2); font-size:.95rem; transition:all .25s;
     }
     .project-card:hover .card-arrow { background:var(--accent); border-color:var(--accent); color:#fff; }
-    /* impact chip on card */
     .card-impact {
       display:inline-flex; align-items:center; gap:5px;
       font-size:.7rem; font-weight:600;
@@ -588,8 +597,8 @@
 <div class="nav-progress" id="navProgress"></div>
 
 <!-- Cursor -->
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
 
 <!-- ── NAV ───────────────────────────────────────────────── -->
 <nav>
@@ -604,8 +613,8 @@
       <li><a href="#contact">Contact</a></li>
     </ul>
     <div class="nav-right">
-      <a href="https://drive.google.com/file/d/1qhxp2maYpKc5U_frNv0zTEepRN_tCd32/view?usp=sharing" target="_blank" class="nav-cta">Resume ↗</a>
-      <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <a href="https://drive.google.com/file/d/1qhxp2maYpKc5U_frNv0zTEepRN_tCd32/view?usp=sharing" target="_blank" rel="noopener" class="nav-cta">Resume ↗</a>
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
     </div>
@@ -613,7 +622,7 @@
 </nav>
 
 <!-- Mobile menu -->
-<div class="mobile-menu" id="mobileMenu">
+<nav class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
   <button class="mobile-close" id="mobileClose" aria-label="Close menu">×</button>
   <a href="#hero" class="mobile-link">Home</a>
   <a href="#about" class="mobile-link">About</a>
@@ -621,11 +630,11 @@
   <a href="#experience" class="mobile-link">Experience</a>
   <a href="#process" class="mobile-link">Process</a>
   <a href="#contact" class="mobile-link">Contact</a>
-  <a href="https://drive.google.com/file/d/1qhxp2maYpKc5U_frNv0zTEepRN_tCd32/view?usp=sharing" target="_blank" class="btn btn-primary" style="margin-top:.5rem">Resume ↗</a>
-</div>
+  <a href="https://drive.google.com/file/d/1qhxp2maYpKc5U_frNv0zTEepRN_tCd32/view?usp=sharing" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:.5rem">Resume ↗</a>
+</nav>
 
 <!-- ── HERO ──────────────────────────────────────────────── -->
-<section id="hero">
+<header id="hero">
   <div class="hero-inner">
     <div class="hero-text reveal">
       <div class="hero-eyebrow">
@@ -661,17 +670,17 @@
     </div>
     <div class="hero-visual reveal" style="transition-delay:.2s">
       <div class="photo-frame">
-        <img src="images/Profileimageblack.png" alt="Venkatesh Bonam — Product Designer" loading="lazy" />
+        <img src="images/Profileimageblack.png" alt="Portrait of Venkatesh Bonam, Product Designer" loading="lazy" />
       </div>
       <div class="float-badge b1">
-        <span class="icon"></span>
+        <span class="icon">🎨</span>
         <div class="fl-text">
           <strong>Figma Expert</strong>
           <span>Design Systems & Tokens</span>
         </div>
       </div>
       <div class="float-badge b2">
-        <span class="icon"></span>
+        <span class="icon">✨</span>
         <div class="fl-text">
           <strong>Open to work</strong>
           <span>Senior UX / Product Designer</span>
@@ -685,52 +694,32 @@
     </svg>
     Scroll
   </div>
-</section>
+</header>
 
 <!-- ── DOMAIN STRIP ──────────────────────────────────────── -->
 <div class="domain-strip" aria-hidden="true">
   <div class="domain-track" id="domainTrack">
     <span class="domain-item hi">AI Platforms</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
     <span class="domain-item">Enterprise SaaS</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
     <span class="domain-item hi">Logistics Systems</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
     <span class="domain-item">Marketplace Design</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
     <span class="domain-item hi">Industrial IoT</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
     <span class="domain-item">Health & Fitness Apps</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
     <span class="domain-item hi">Design Systems</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
     <span class="domain-item">Admin Portals</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
     <span class="domain-item hi">Mobile-First UX</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
     <span class="domain-item">Analytics Dashboards</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
     <!-- clone for seamless loop -->
     <span class="domain-item hi">AI Platforms</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
     <span class="domain-item">Enterprise SaaS</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
     <span class="domain-item hi">Logistics Systems</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
     <span class="domain-item">Marketplace Design</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
     <span class="domain-item hi">Industrial IoT</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
     <span class="domain-item">Health & Fitness Apps</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
     <span class="domain-item hi">Design Systems</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
     <span class="domain-item">Admin Portals</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
     <span class="domain-item hi">Mobile-First UX</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
     <span class="domain-item">Analytics Dashboards</span>
-    <span class="domain-item"><span class="d-dot"></span></span>
   </div>
 </div>
 
@@ -740,13 +729,13 @@
     <div class="sh reveal">
       <span class="sec-label">About Me</span>
       <h2>Designer & Problem Solver</h2>
-      <p>I don't just make things look good I make them work better for the people who use them.</p>
+      <p>I don't just make things look good — I make them work better for the people who use them.</p>
     </div>
     <div class="about-grid">
       <div class="about-text reveal">
-        <p>Most interfaces fail not because of bad code <strong>but because someone skipped the user.</strong> That's the gap I fill.</p>
+        <p>Most interfaces fail not because of bad code, <strong>but because someone skipped the user.</strong> That's the gap I fill.</p>
         <p>I'm Venkatesh, a Product Designer with 3+ years owning design end-to-end across enterprise SaaS, AI products, and mobile applications. I've shipped <strong>700+ production screens</strong> across 4 live products — AI talent platforms, logistics systems, marketplace solutions, and industrial IoT apps.</p>
-        <p>At <strong>BeamX TechLabs</strong>, I design directly with Product Managers, Developers, and business stakeholders translating complex requirements into structured design decisions with clear rationale. I've reduced revision cycles from 4 rounds to 2 and built a 40+ component Figma design system used across all products.</p>
+        <p>At <strong>BeamX TechLabs</strong>, I design directly with Product Managers, Developers, and business stakeholders, translating complex requirements into structured design decisions with clear rationale. I've reduced revision cycles from 4 rounds to 2 and built a 40+ component Figma design system used across all products.</p>
         <p>I stay involved through implementation. <strong>Handoff isn't the finish line.</strong></p>
         <div style="margin-top:1.75rem;display:flex;gap:.85rem;flex-wrap:wrap;">
           <a href="#contact" class="btn btn-primary">Get in touch →</a>
@@ -809,7 +798,7 @@
     </div>
     <div class="projects-grid">
 
-      <div class="project-card reveal" data-modal="iot">
+      <div class="project-card reveal" data-modal="iot" role="button" tabindex="0" aria-label="View details for Industrial Magnet Control System">
         <div class="card-img" style="background:linear-gradient(135deg,#0a0a1a,#1a1035)">
           <div class="card-img-bg"></div>
           <div class="card-emoji">⚙️</div>
@@ -831,7 +820,7 @@
         </div>
       </div>
 
-      <div class="project-card reveal" style="transition-delay:.08s" data-modal="chatbot">
+      <div class="project-card reveal" style="transition-delay:.08s" data-modal="chatbot" role="button" tabindex="0" aria-label="View details for AI Chatbot with Cited Responses">
         <div class="card-img" style="background:linear-gradient(135deg,#0a1a14,#0a1430)">
           <div class="card-img-bg"></div>
           <div class="card-emoji">🤖</div>
@@ -853,7 +842,7 @@
         </div>
       </div>
 
-      <div class="project-card reveal" style="transition-delay:.16s" data-modal="ecom">
+      <div class="project-card reveal" style="transition-delay:.16s" data-modal="ecom" role="button" tabindex="0" aria-label="View details for Branded E-Commerce Platform">
         <div class="card-img" style="background:linear-gradient(135deg,#1a0f14,#180f1a)">
           <div class="card-img-bg"></div>
           <div class="card-emoji">🛍️</div>
@@ -862,7 +851,7 @@
         <div class="card-body">
           <div class="card-impact">✦ 40+ component system · revisions halved</div>
           <h3>Branded E-Commerce Platform</h3>
-          <p>Mobile-first e-commerce UX 5+ user flows from discovery to checkout, and a 40+ component design system that eliminated dev inconsistencies at handoff.</p>
+          <p>Mobile-first e-commerce UX, 5+ user flows from discovery to checkout, and a 40+ component design system that eliminated dev inconsistencies at handoff.</p>
           <div class="card-meta">
             <span class="meta-tag">Mobile-First</span>
             <span class="meta-tag">Design System</span>
@@ -875,7 +864,7 @@
         </div>
       </div>
 
-      <div class="project-card reveal" style="transition-delay:.04s" data-modal="fitness">
+      <div class="project-card reveal" style="transition-delay:.04s" data-modal="fitness" role="button" tabindex="0" aria-label="View details for Personalized Fitness App">
         <div class="card-img" style="background:linear-gradient(135deg,#0a190a,#121a1e)">
           <div class="card-img-bg"></div>
           <div class="card-emoji">💪</div>
@@ -897,7 +886,7 @@
         </div>
       </div>
 
-      <div class="project-card reveal" style="transition-delay:.12s" data-modal="wearable">
+      <div class="project-card reveal" style="transition-delay:.12s" data-modal="wearable" role="button" tabindex="0" aria-label="View details for Temperature Safety App">
         <div class="card-img" style="background:linear-gradient(135deg,#1a1a0a,#1a130a)">
           <div class="card-img-bg"></div>
           <div class="card-emoji">🌡️</div>
@@ -919,7 +908,7 @@
         </div>
       </div>
 
-      <div class="project-card reveal" style="transition-delay:.2s" data-modal="events">
+      <div class="project-card reveal" style="transition-delay:.2s" data-modal="events" role="button" tabindex="0" aria-label="View details for Event Management Platform">
         <div class="card-img" style="background:linear-gradient(135deg,#190f1a,#1a0f12)">
           <div class="card-img-bg"></div>
           <div class="card-emoji">🎉</div>
@@ -928,7 +917,7 @@
         <div class="card-body">
           <div class="card-impact">✦ 3 flows → 1 · delivered in 6 weeks</div>
           <h3>Event Management Platform</h3>
-          <p>Unified booking, reservations, and decor browsing into one interface consolidating 3 separate flows into a single cohesive user journey in 6 weeks.</p>
+          <p>Unified booking, reservations, and decor browsing into one interface, consolidating 3 separate flows into a single cohesive user journey in 6 weeks.</p>
           <div class="card-meta">
             <span class="meta-tag">Information Architecture</span>
             <span class="meta-tag">Flow Design</span>
@@ -951,7 +940,7 @@
     <div class="sh reveal">
       <span class="sec-label">Experience</span>
       <h2>Where I've Worked</h2>
-      <p>Two roles across different scales both with full design ownership.</p>
+      <p>Two roles across different scales, both with full design ownership.</p>
     </div>
     <div class="timeline reveal">
 
@@ -969,9 +958,9 @@
         <ul class="tl-bullets">
           <li>Shipped <strong>700+ high-fidelity screens</strong> across 4 enterprise products within Agile delivery cycles — all approved without design rework.</li>
           <li>Built a <strong>40+ component Figma design system</strong> used across all products, standardizing patterns and cutting handoff time.</li>
-          <li>Presented design solutions to business stakeholders <strong>reduced revision cycles from 4 rounds to 2</strong> through structured early alignment.</li>
-          <li>Owned UX for a <strong>multi-role AI assessment platform</strong> Super Admin, College Admin, and Student portals with RBAC, voice interview flows, and analytics.</li>
-          <li>Designed a full <strong>logistics management system</strong> consignment booking, shipment tracking, invoice management, and operations dashboard.</li>
+          <li>Presented design solutions to business stakeholders, <strong>reduced revision cycles from 4 rounds to 2</strong> through structured early alignment.</li>
+          <li>Owned UX for a <strong>multi-role AI assessment platform</strong>: Super Admin, College Admin, and Student portals with RBAC, voice interview flows, and analytics.</li>
+          <li>Designed a full <strong>logistics management system</strong>: consignment booking, shipment tracking, invoice management, and operations dashboard.</li>
           <li>Built a safety-critical <strong>IoT mobile app</strong> for Bluetooth crane control with real-time voltage/amperage monitoring for field operators.</li>
         </ul>
         <div class="tl-tags">
@@ -996,9 +985,9 @@
           </div>
         </div>
         <ul class="tl-bullets">
-          <li>Designed <strong>3 shipped products end-to-end</strong> — fitness app, wearable safety app, and event e-commerce platform applying design thinking in 11 months.</li>
-          <li>Ran usability testing with <strong>5–8 users per round</strong> identified and resolved 9+ critical friction points before each developer handoff.</li>
-          <li>Applied <strong>WCAG 2.1 accessibility principles</strong> color contrast, tap target sizing, and screen reader compatibility across all components.</li>
+          <li>Designed <strong>3 shipped products end-to-end</strong> — fitness app, wearable safety app, and event e-commerce platform, applying design thinking in 11 months.</li>
+          <li>Ran usability testing with <strong>5–8 users per round</strong>; identified and resolved 9+ critical friction points before each developer handoff.</li>
+          <li>Applied <strong>WCAG 2.1 accessibility principles</strong>: color contrast, tap target sizing, and screen reader compatibility across all components.</li>
           <li>Delivered complete artifact suites: personas, user flows, sitemaps, wireframes, hi-fi mockups, and interactive prototypes in Figma.</li>
         </ul>
         <div class="tl-tags">
@@ -1036,7 +1025,7 @@
       <div class="process-step reveal" style="transition-delay:.16s" data-num="03">
         <div class="step-icon">✏️</div>
         <h4>Design & Prototype</h4>
-        <p>Wireframes through high-fidelity UI in Figma. Interactive prototypes that can be tested not just presented.</p>
+        <p>Wireframes through high-fidelity UI in Figma. Interactive prototypes that can be tested, not just presented.</p>
       </div>
       <div class="process-step reveal" style="transition-delay:.24s" data-num="04">
         <div class="step-icon">🧪</div>
@@ -1058,21 +1047,21 @@
     <div class="sh reveal">
       <span class="sec-label">Visual Design</span>
       <h2>Graphic Work</h2>
-      <p>Brand assets, campaign creatives, and event materials consistent visual identity across every touchpoint.</p>
+      <p>Brand assets, campaign creatives, and event materials — consistent visual identity across every touchpoint.</p>
     </div>
   </div>
-  <div class="slider-wrap reveal">
+  <div class="slider-wrap reveal" aria-label="Graphic design portfolio carousel">
     <div class="slider-track">
-      <div class="slide-item"><img src="images/Image2.gif" alt="Graphic design work 1" loading="lazy"/></div>
-      <div class="slide-item"><img src="images/image1.gif" alt="Graphic design work 2" loading="lazy"/></div>
-      <div class="slide-item"><img src="images/image3.png" alt="Graphic design work 3" loading="lazy"/></div>
-      <div class="slide-item"><img src="images/image5.png" alt="Graphic design work 4" loading="lazy"/></div>
-      <div class="slide-item"><img src="images/mobile_image.png" alt="Graphic design work 5" loading="lazy"/></div>
-      <div class="slide-item"><img src="images/Image2.gif" alt="Graphic design work 1" loading="lazy"/></div>
-      <div class="slide-item"><img src="images/image1.gif" alt="Graphic design work 2" loading="lazy"/></div>
-      <div class="slide-item"><img src="images/image3.png" alt="Graphic design work 3" loading="lazy"/></div>
-      <div class="slide-item"><img src="images/image5.png" alt="Graphic design work 4" loading="lazy"/></div>
-      <div class="slide-item"><img src="images/mobile_image.png" alt="Graphic design work 5" loading="lazy"/></div>
+      <div class="slide-item"><img src="images/Image2.gif" alt="Graphic design work sample 1" loading="lazy"/></div>
+      <div class="slide-item"><img src="images/image1.gif" alt="Graphic design work sample 2" loading="lazy"/></div>
+      <div class="slide-item"><img src="images/image3.png" alt="Graphic design work sample 3" loading="lazy"/></div>
+      <div class="slide-item"><img src="images/image5.png" alt="Graphic design work sample 4" loading="lazy"/></div>
+      <div class="slide-item"><img src="images/mobile_image.png" alt="Mobile app graphic design sample" loading="lazy"/></div>
+      <div class="slide-item"><img src="images/Image2.gif" alt="Graphic design work sample 1" loading="lazy"/></div>
+      <div class="slide-item"><img src="images/image1.gif" alt="Graphic design work sample 2" loading="lazy"/></div>
+      <div class="slide-item"><img src="images/image3.png" alt="Graphic design work sample 3" loading="lazy"/></div>
+      <div class="slide-item"><img src="images/image5.png" alt="Graphic design work sample 4" loading="lazy"/></div>
+      <div class="slide-item"><img src="images/mobile_image.png" alt="Mobile app graphic design sample" loading="lazy"/></div>
     </div>
   </div>
 </section>
@@ -1087,9 +1076,9 @@
           <h2>Let's build something users will love.</h2>
           <p>Open to Senior UX Designer and Product Designer roles, freelance projects, and design collaborations. If you have something interesting, let's talk.</p>
           <div class="socials">
-            <a href="https://linkedin.com/in/venkateshb30" target="_blank" class="social-btn" aria-label="LinkedIn">in</a>
-            <a href="https://behance.net" target="_blank" class="social-btn" aria-label="Behance">Be</a>
-            <a href="mailto:venkateshbonam.uxui@gmail.com" class="social-btn" aria-label="Email">@</a>
+            <a href="https://linkedin.com/in/venkateshb30" target="_blank" rel="noopener" class="social-btn" aria-label="LinkedIn Profile">in</a>
+            <a href="https://behance.net" target="_blank" rel="noopener" class="social-btn" aria-label="Behance Portfolio">Be</a>
+            <a href="mailto:venkateshbonam.uxui@gmail.com" class="social-btn" aria-label="Send Email">@</a>
           </div>
         </div>
         <div class="contact-methods">
@@ -1129,7 +1118,7 @@
 <!-- ── MODAL ──────────────────────────────────────────── -->
 <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-label="Project details">
   <div class="modal-box">
-    <button class="modal-close-btn" id="modalClose" aria-label="Close">×</button>
+    <button class="modal-close-btn" id="modalClose" aria-label="Close project details">×</button>
     <div id="modalContent"></div>
   </div>
 </div>
@@ -1150,8 +1139,8 @@ document.addEventListener('mousemove',e=>{
   requestAnimationFrame(tick);
 })();
 document.querySelectorAll('a,button,.project-card,.process-step').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{ cursor.classList.add('grow'); ring.classList.add('grow'); });
-  el.addEventListener('mouseleave',()=>{ cursor.classList.remove('grow'); ring.classList.remove('grow'); });
+  el.addEventListener('mouseenter',()=>{ if(cursor) cursor.classList.add('grow'); if(ring) ring.classList.add('grow'); });
+  el.addEventListener('mouseleave',()=>{ if(cursor) cursor.classList.remove('grow'); if(ring) ring.classList.remove('grow'); });
 });
 
 /* ── Nav progress bar ────────────────────── */
@@ -1165,10 +1154,20 @@ window.addEventListener('scroll',()=>{
 const ham    = document.getElementById('hamburger');
 const menu   = document.getElementById('mobileMenu');
 const mClose = document.getElementById('mobileClose');
-ham.addEventListener('click',()=>{ ham.classList.toggle('open'); menu.classList.toggle('open'); });
-mClose.addEventListener('click',()=>{ ham.classList.remove('open'); menu.classList.remove('open'); });
+ham.addEventListener('click',()=>{ 
+  const isOpen = ham.classList.toggle('open'); 
+  menu.classList.toggle('open'); 
+  ham.setAttribute('aria-expanded', isOpen);
+});
+mClose.addEventListener('click',()=>{ 
+  ham.classList.remove('open'); 
+  menu.classList.remove('open'); 
+  ham.setAttribute('aria-expanded', 'false');
+});
 document.querySelectorAll('.mobile-link').forEach(l=>l.addEventListener('click',()=>{
-  ham.classList.remove('open'); menu.classList.remove('open');
+  ham.classList.remove('open'); 
+  menu.classList.remove('open');
+  ham.setAttribute('aria-expanded', 'false');
 }));
 
 /* ── Scroll reveal ───────────────────────── */
@@ -1211,7 +1210,7 @@ const counterObs = new IntersectionObserver(entries=>{
 const heroStats = document.querySelector('.hero-stats');
 if(heroStats) counterObs.observe(heroStats);
 
-/* ── Modal data ──────────────────────────── */
+/* ── Modal data & Accessible Focus Management ─────────── */
 const modals = {
   iot:{
     title:'Industrial Magnet Control System',
@@ -1248,26 +1247,59 @@ const modals = {
 const overlay   = document.getElementById('modalOverlay');
 const modalBody = document.getElementById('modalContent');
 const mCloseBtn = document.getElementById('modalClose');
+let lastFocusedElement = null;
+
+function openModal(card) {
+  const d = modals[card.dataset.modal]; 
+  if(!d) return;
+  
+  modalBody.innerHTML = `
+    <h2>${d.title}</h2>
+    <div class="modal-meta">
+      <div><strong>Role</strong><span>${d.role}</span></div>
+      <div><strong>Duration</strong><span>${d.duration}</span></div>
+      <div><strong>Tools</strong><span>${d.tools}</span></div>
+    </div>
+    <p>${d.body}</p>`;
+  
+  lastFocusedElement = card; // Save focus
+  overlay.classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(() => mCloseBtn.focus(), 100); // Move focus to close button
+}
+
+function closeModal() {
+  overlay.classList.remove('open'); 
+  document.body.style.overflow='';
+  if (lastFocusedElement) lastFocusedElement.focus(); // Restore focus
+}
 
 document.querySelectorAll('.project-card').forEach(card=>{
-  card.addEventListener('click',()=>{
-    const d = modals[card.dataset.modal]; if(!d) return;
-    modalBody.innerHTML=`
-      <h2>${d.title}</h2>
-      <div class="modal-meta">
-        <div><strong>Role</strong><span>${d.role}</span></div>
-        <div><strong>Duration</strong><span>${d.duration}</span></div>
-        <div><strong>Tools</strong><span>${d.tools}</span></div>
-      </div>
-      <p>${d.body}</p>`;
-    overlay.classList.add('open');
-    document.body.style.overflow='hidden';
+  card.addEventListener('click', () => openModal(card));
+  // Keyboard Accessibility for Cards
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openModal(card);
+    }
   });
 });
-mCloseBtn.addEventListener('click',close);
-overlay.addEventListener('click',e=>{ if(e.target===overlay) close(); });
-document.addEventListener('keydown',e=>{ if(e.key==='Escape') close(); });
-function close(){ overlay.classList.remove('open'); document.body.style.overflow=''; }
+
+mCloseBtn.addEventListener('click', closeModal);
+overlay.addEventListener('click', e => { if(e.target === overlay) closeModal(); });
+document.addEventListener('keydown', e => { 
+  if(e.key === 'Escape' && overlay.classList.contains('open')) closeModal();
+  
+  // Basic Focus Trap
+  if (e.key === 'Tab' && overlay.classList.contains('open')) {
+    if (e.shiftKey) { // Shift + Tab
+      if (document.activeElement === mCloseBtn) {
+        e.preventDefault();
+        mCloseBtn.focus(); // Keeping it simple: trap on close button since modal content isn't interactive
+      }
+    }
+  }
+});
 </script>
 </body>
 </html>

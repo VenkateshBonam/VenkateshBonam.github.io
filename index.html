@@ -32,6 +32,30 @@ img{display:block;max-width:100%}
 a{text-decoration:none;color:inherit}
 button{background:none;border:none;cursor:pointer;font-family:inherit}
 
+/* ── SCROLL PROGRESS ────────────────────────── */
+.scroll-progress{
+  position:fixed;top:0;left:0;height:2.5px;z-index:2000;
+  background:linear-gradient(90deg,var(--red),#ff6b6b);
+  width:0%;transition:width .08s linear;
+  box-shadow:0 0 8px rgba(232,35,58,.5)
+}
+
+/* ── CUSTOM CURSOR ──────────────────────────── */
+.cur,.cur-ring{
+  position:fixed;pointer-events:none;
+  border-radius:50%;transform:translate(-50%,-50%);
+  z-index:9999;
+}
+.cur{width:8px;height:8px;background:var(--red);transition:width .3s,height .3s,background .3s}
+.cur-ring{
+  width:34px;height:34px;
+  border:1.5px solid rgba(232,35,58,.45);
+  z-index:9998;transition:width .35s var(--ease),height .35s var(--ease),opacity .3s
+}
+.cur.big{width:18px;height:18px}
+.cur-ring.big{width:56px;height:56px}
+@media(max-width:768px){.cur,.cur-ring{display:none}}
+
 /* ── PRELOADER ──────────────────────────────── */
 #preloader{
   position:fixed;inset:0;z-index:9999;
@@ -493,6 +517,118 @@ body.light-theme .top-header{background:rgba(246,246,243,.88)}
 }
 .modal-behance-btn:hover{opacity:.85}
 
+/* ── CARD 3D TILT ───────────────────────────── */
+.project-card{transform-style:preserve-3d;will-change:transform}
+.project-card .card-shine{
+  position:absolute;inset:0;border-radius:14px;
+  background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.08),transparent 65%);
+  opacity:0;transition:opacity .3s;pointer-events:none;z-index:10
+}
+.project-card:hover .card-shine{opacity:1}
+
+/* ── MAGNETIC BTN ───────────────────────────── */
+.freelance-btn{transition:transform .3s var(--ease),opacity .2s,box-shadow .3s}
+
+/* ── HERO TEXT REVEAL ───────────────────────── */
+.hero-name .char{
+  display:inline-block;
+  opacity:0;transform:translateY(40px);
+}
+.hero-name .split-word{display:inline-block;overflow:hidden;line-height:1}
+
+/* ── SECTION BLUR REVEAL ────────────────────── */
+.blur-reveal{
+  opacity:0;
+  filter:blur(10px);
+  transform:translateY(20px);
+  transition:opacity .8s var(--ease),filter .8s var(--ease),transform .8s var(--ease)
+}
+.blur-reveal.in{opacity:1;filter:blur(0);transform:translateY(0)}
+
+/* ── FLOATING PORTRAIT GLOW ─────────────────── */
+#portrait::after{
+  content:'';position:absolute;
+  inset:-2px;border-radius:22px;z-index:-1;
+  background:linear-gradient(135deg,var(--red),transparent 60%);
+  opacity:0;transition:opacity .5s;
+  filter:blur(24px)
+}
+#portrait:hover::after{opacity:.4}
+
+/* ── TICKER STRIP (graphic work) ────────────── */
+.ticker-section{
+  overflow:hidden;border-top:1px solid var(--b1);
+  border-bottom:1px solid var(--b1);
+  background:var(--s1);padding:.85rem 0;
+  position:relative
+}
+.ticker-section::before,.ticker-section::after{
+  content:'';position:absolute;top:0;width:80px;height:100%;
+  z-index:2;pointer-events:none
+}
+.ticker-section::before{left:0;background:linear-gradient(to right,var(--s1),transparent)}
+.ticker-section::after{right:0;background:linear-gradient(to left,var(--s1),transparent)}
+.ticker-track{
+  display:flex;gap:0;width:max-content;
+  animation:tickr 22s linear infinite
+}
+.ticker-section:hover .ticker-track{animation-play-state:paused}
+@keyframes tickr{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker-item{
+  display:inline-flex;align-items:center;gap:.45rem;
+  padding:0 2rem;font-size:.75rem;font-weight:500;
+  color:var(--t3);white-space:nowrap;letter-spacing:.05em
+}
+.ticker-item.hi{color:var(--t2)}
+.ticker-sep{
+  width:4px;height:4px;border-radius:50%;
+  background:var(--red);opacity:.5;flex-shrink:0
+}
+
+/* ── GRAPHIC SLIDER ─────────────────────────── */
+.graphic-section{padding:6rem 2.5rem}
+.graphic-inner{max-width:1320px;margin:0 auto}
+.slider-wrap{
+  overflow:hidden;position:relative;
+  margin:0 -2.5rem;padding:.4rem 0
+}
+.slider-track-g{
+  display:flex;gap:1.1rem;
+  width:max-content;
+  animation:sl 32s linear infinite
+}
+.slider-wrap:hover .slider-track-g{animation-play-state:paused}
+@keyframes sl{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.slide-g{
+  width:300px;height:210px;border-radius:12px;
+  overflow:hidden;flex-shrink:0;
+  background:var(--s2);border:1px solid var(--b1);
+  transition:transform .3s,border-color .3s
+}
+.slide-g:hover{transform:scale(1.03);border-color:var(--red)}
+.slide-g img{width:100%;height:100%;object-fit:cover}
+.slider-wrap::before,.slider-wrap::after{
+  content:'';position:absolute;top:0;
+  width:80px;height:100%;z-index:2;pointer-events:none
+}
+.slider-wrap::before{left:0;background:linear-gradient(to right,var(--bg),transparent)}
+.slider-wrap::after{right:0;background:linear-gradient(to left,var(--bg),transparent)}
+
+/* ── BACK TO TOP ────────────────────────────── */
+.back-top{
+  position:fixed;bottom:2rem;right:2rem;z-index:800;
+  width:42px;height:42px;border-radius:50%;
+  background:var(--red);color:#fff;
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;font-weight:700;
+  opacity:0;transform:translateY(10px);
+  transition:opacity .3s,transform .3s,box-shadow .2s;
+  pointer-events:none
+}
+.back-top.show{opacity:1;transform:translateY(0);pointer-events:all}
+.back-top:hover{box-shadow:0 6px 20px rgba(232,35,58,.4)}
+
 /* ── RESPONSIVE ─────────────────────────────── */
 @media(max-width:1100px){
   .projects-grid{grid-template-columns:repeat(2,1fr)}
@@ -522,6 +658,16 @@ body.light-theme .top-header{background:rgba(246,246,243,.88)}
   </style>
 </head>
 <body>
+
+<!-- SCROLL PROGRESS -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- CURSOR -->
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="curRing"></div>
+
+<!-- BACK TO TOP -->
+<button class="back-top" id="backTop" aria-label="Back to top">↑</button>
 
 <!-- PRELOADER -->
 <div id="preloader">
@@ -596,6 +742,7 @@ body.light-theme .top-header{background:rgba(246,246,243,.88)}
   <div class="projects-grid">
 
     <div class="project-card" data-project="01">
+      <div class="card-shine"></div>
       <div class="project-num">01</div>
       <div class="project-thumb">
         <img src="images/project-fraternity.png" alt="Enterprise Community Platform" onerror="this.parentNode.innerHTML='🏛️'"/>
@@ -613,6 +760,7 @@ body.light-theme .top-header{background:rgba(246,246,243,.88)}
     </div>
 
     <div class="project-card" data-project="02">
+      <div class="card-shine"></div>
       <div class="project-num">02</div>
       <div class="project-thumb">
         <img src="images/project-ai.png" alt="AI Talent Assessment Platform" onerror="this.parentNode.innerHTML='🤖'"/>
@@ -630,6 +778,7 @@ body.light-theme .top-header{background:rgba(246,246,243,.88)}
     </div>
 
     <div class="project-card" data-project="03">
+      <div class="card-shine"></div>
       <div class="project-num">03</div>
       <div class="project-thumb">
         <img src="images/project-iot.png" alt="Industrial IoT App" onerror="this.parentNode.innerHTML='⚙️'"/>
@@ -647,6 +796,7 @@ body.light-theme .top-header{background:rgba(246,246,243,.88)}
     </div>
 
     <div class="project-card" data-project="04">
+      <div class="card-shine"></div>
       <div class="project-num">04</div>
       <div class="project-thumb">
         <img src="images/project-logistics.png" alt="Logistics System" onerror="this.parentNode.innerHTML='🚚'"/>
@@ -664,6 +814,7 @@ body.light-theme .top-header{background:rgba(246,246,243,.88)}
     </div>
 
     <div class="project-card" data-project="05">
+      <div class="card-shine"></div>
       <div class="project-num">05</div>
       <div class="project-thumb">
         <img src="images/project-ecom.png" alt="E-Commerce Platform" onerror="this.parentNode.innerHTML='🛍️'"/>
@@ -681,6 +832,7 @@ body.light-theme .top-header{background:rgba(246,246,243,.88)}
     </div>
 
     <div class="project-card" data-project="06">
+      <div class="card-shine"></div>
       <div class="project-num">06</div>
       <div class="project-thumb">
         <img src="images/project-fitness.png" alt="Fitness App" onerror="this.parentNode.innerHTML='💪'"/>
@@ -698,6 +850,7 @@ body.light-theme .top-header{background:rgba(246,246,243,.88)}
     </div>
 
     <div class="project-card" data-project="07">
+      <div class="card-shine"></div>
       <div class="project-num">07</div>
       <div class="project-thumb">
         <img src="images/project-wearable.png" alt="Wearable Safety App" onerror="this.parentNode.innerHTML='🌡️'"/>
@@ -715,6 +868,7 @@ body.light-theme .top-header{background:rgba(246,246,243,.88)}
     </div>
 
     <div class="project-card" data-project="08">
+      <div class="card-shine"></div>
       <div class="project-num">08</div>
       <div class="project-thumb">
         <img src="images/project-events.png" alt="Event Platform" onerror="this.parentNode.innerHTML='🎉'"/>
@@ -868,6 +1022,62 @@ body.light-theme .top-header{background:rgba(246,246,243,.88)}
   </div>
 </section>
 
+<!-- TICKER STRIP -->
+<div class="ticker-section" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-item hi">Product Design</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item">Enterprise SaaS</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item hi">Design Systems</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item">AI Platforms</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item hi">Industrial IoT</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item">Mobile-First UX</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item hi">RBAC Workflows</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item">Figma Expert</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item hi">GCC Region</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item">Multi-Currency UX</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item hi">700+ Screens</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item">WCAG 2.1</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <!-- clone for seamless loop -->
+    <span class="ticker-item hi">Product Design</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item">Enterprise SaaS</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item hi">Design Systems</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item">AI Platforms</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item hi">Industrial IoT</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item">Mobile-First UX</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item hi">RBAC Workflows</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item">Figma Expert</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item hi">GCC Region</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item">Multi-Currency UX</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item hi">700+ Screens</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+    <span class="ticker-item">WCAG 2.1</span><span class="ticker-item"><span class="ticker-sep"></span></span>
+  </div>
+</div>
+
+<!-- GRAPHIC DESIGN WORK -->
+<section class="graphic-section">
+  <div class="graphic-inner">
+    <div class="section-head" style="margin-bottom:2.5rem">
+      <h2 class="section-title">Visual Design</h2>
+      <p class="section-sub">Brand assets, campaign creatives & marketing materials</p>
+    </div>
+  </div>
+  <div class="slider-wrap">
+    <div class="slider-track-g">
+      <div class="slide-g"><img src="images/Image2.gif" alt="Graphic design 1" loading="lazy"/></div>
+      <div class="slide-g"><img src="images/image1.gif" alt="Graphic design 2" loading="lazy"/></div>
+      <div class="slide-g"><img src="images/image3.png" alt="Graphic design 3" loading="lazy"/></div>
+      <div class="slide-g"><img src="images/image5.png" alt="Graphic design 4" loading="lazy"/></div>
+      <div class="slide-g"><img src="images/mobile_image.png" alt="Graphic design 5" loading="lazy"/></div>
+      <!-- clones -->
+      <div class="slide-g"><img src="images/Image2.gif" alt="Graphic design 1" loading="lazy"/></div>
+      <div class="slide-g"><img src="images/image1.gif" alt="Graphic design 2" loading="lazy"/></div>
+      <div class="slide-g"><img src="images/image3.png" alt="Graphic design 3" loading="lazy"/></div>
+      <div class="slide-g"><img src="images/image5.png" alt="Graphic design 4" loading="lazy"/></div>
+      <div class="slide-g"><img src="images/mobile_image.png" alt="Graphic design 5" loading="lazy"/></div>
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer class="footer-section" id="contact">
   <div class="footer-inner">
@@ -926,148 +1136,182 @@ body.light-theme .top-header{background:rgba(246,246,243,.88)}
 const projectDetails={
   "01":{title:"ENTERPRISE COMMUNITY MANAGEMENT PLATFORM",category:"ADMIN PORTAL · ENTERPRISE SAAS · GCC REGION",behanceUrl:"https://www.behance.net/venkateshbonamuxui",image:"images/project-fraternity.png",images:["images/project-fraternity.png"],description:"End-to-end UI/UX for a professional community platform serving 1,716+ members across the GCC. Designed 9+ major admin modules: User Management, Credits & Multi-Currency (7 currencies), RBAC with 10+ roles, Survey Management (2,409 surveys), Job Opportunities (602 listings), Transaction Analytics, and a headless CMS for 2 public websites.",tags:["ENTERPRISE SAAS","ADMIN PORTAL","RBAC","MULTI-CURRENCY","GCC REGION","9 MODULES","DESIGN SYSTEMS","FIGMA"]},
   "02":{title:"AI TALENT ASSESSMENT PLATFORM",category:"AI PRODUCT DESIGN · MULTI-ROLE UX",behanceUrl:"https://www.behance.net/venkateshbonamuxui",image:"images/project-ai.png",images:["images/project-ai.png"],description:"Multi-role AI assessment platform with distinct portals for Super Admin, College Admin, and Students. Features AI voice interview flows, behavioral assessments, psychometric tests, resume analysis dashboards, and a live analytics dashboard with full RBAC architecture.",tags:["AI INTERFACE","MULTI-ROLE","DASHBOARD","RBAC","ASSESSMENT","UX RESEARCH","FIGMA"]},
-  "03":{title:"INDUSTRIAL IOT CRANE CONTROL APP",category:"MOBILE APP · SAFETY-CRITICAL UX",behanceUrl:"https://www.behance.net/venkateshbonamuxui",image:"images/project-iot.png",images:["images/project-iot.png"],description:"Safety-critical mobile app for Bluetooth-controlled industrial crane magnet operations. Designed 20+ screens for voltage (up to 400V) and amplitude (up to 50A) precision controls — built for field operators in high-stakes environments requiring precision and minimal cognitive load.",tags:["MOBILE APP","IOT","SAFETY UX","BLUETOOTH","INDUSTRIAL","MOBILE-FIRST","FIGMA"]},
+  "03":{title:"INDUSTRIAL IOT CRANE CONTROL APP",category:"MOBILE APP · SAFETY-CRITICAL UX",behanceUrl:"https://www.behance.net/venkateshbonamuxui",image:"images/project-iot.png",images:["images/project-iot.png"],description:"Safety-critical mobile app for Bluetooth-controlled industrial crane magnet operations. Designed 20+ screens for voltage (up to 400V) and amplitude (up to 50A) precision controls built for field operators in high-stakes environments.",tags:["MOBILE APP","IOT","SAFETY UX","BLUETOOTH","INDUSTRIAL","MOBILE-FIRST","FIGMA"]},
   "04":{title:"LOGISTICS MANAGEMENT SYSTEM",category:"ENTERPRISE WEB · OPERATIONS PLATFORM",behanceUrl:"https://www.behance.net/venkateshbonamuxui",image:"images/project-logistics.png",images:["images/project-logistics.png"],description:"Full-scale enterprise logistics platform covering consignment booking, shipment tracking, invoice management, pricing modules, airline and airport management, customer contracts, and a comprehensive operations analytics dashboard — all shipped to production.",tags:["ENTERPRISE","LOGISTICS","OPERATIONS","DASHBOARD","ANALYTICS","WEB DESIGN","FIGMA"]},
-  "05":{title:"BRANDED E-COMMERCE PLATFORM",category:"WEB DESIGN · DESIGN SYSTEM",behanceUrl:"https://www.behance.net/venkateshbonamuxui",image:"images/project-ecom.png",images:["images/project-ecom.png"],description:"Mobile-first e-commerce UX with 5+ user flows from discovery to checkout. Built a 40+ component Figma design system that eliminated dev inconsistencies at handoff. Reduced stakeholder revision cycles from 4 rounds to 2 through structured FigJam alignment workshops.",tags:["E-COMMERCE","MOBILE-FIRST","DESIGN SYSTEM","40+ COMPONENTS","USER FLOWS","WEB DESIGN","FIGMA"]},
-  "06":{title:"PERSONALIZED FITNESS APP",category:"MOBILE APP · HEALTH & WELLNESS",behanceUrl:"https://www.behance.net/venkateshbonamuxui",image:"images/project-fitness.png",images:["images/project-fitness.png"],description:"Adaptive workout planner designed from research to prototype — personas for 3 user segments (age, gender, health goals), 8+ user flows covering onboarding, workout tracking, and trainer-connect features. Validated through usability testing with 5–8 users per round.",tags:["MOBILE APP","HEALTH APP","UX RESEARCH","PERSONAS","USER FLOWS","USABILITY TESTING","FIGMA"]},
-  "07":{title:"WEARABLE TEMPERATURE SAFETY APP",category:"WEARABLE UX · SAFETY SYSTEM",behanceUrl:"https://www.behance.net/venkateshbonamuxui",image:"images/project-wearable.png",images:["images/project-wearable.png"],description:"Wearable-connected safety app monitoring real-time hydration and physical capacity for high-temperature environments. 3-tier alert system (safe/caution/danger) with separate Android and iOS specs. WCAG 2.1 accessibility principles applied across 100% of components.",tags:["WEARABLE","SAFETY UX","ANDROID & IOS","ALERT DESIGN","ACCESSIBILITY","WCAG 2.1","FIGMA"]},
-  "08":{title:"EVENT MANAGEMENT PLATFORM",category:"E-COMMERCE · EVENT TECH",behanceUrl:"https://www.behance.net/venkateshbonamuxui",image:"images/project-events.png",images:["images/project-events.png"],description:"Unified event management platform consolidating booking, reservations, and decor browsing into a single interface. Reduced task steps by consolidating 3 separate flows into 1 cohesive journey. Full hi-fi mockups from brief to developer handoff in 6 weeks.",tags:["EVENT PLATFORM","E-COMMERCE","USER FLOWS","INFORMATION ARCHITECTURE","6 WEEKS","FIGMA"]}
+  "05":{title:"BRANDED E-COMMERCE PLATFORM",category:"WEB DESIGN · DESIGN SYSTEM",behanceUrl:"https://www.behance.net/venkateshbonamuxui",image:"images/project-ecom.png",images:["images/project-ecom.png"],description:"Mobile-first e-commerce UX with 5+ user flows from discovery to checkout. Built a 40+ component Figma design system. Reduced stakeholder revision cycles from 4 rounds to 2 through structured FigJam alignment workshops.",tags:["E-COMMERCE","MOBILE-FIRST","DESIGN SYSTEM","40+ COMPONENTS","USER FLOWS","WEB DESIGN","FIGMA"]},
+  "06":{title:"PERSONALIZED FITNESS APP",category:"MOBILE APP · HEALTH & WELLNESS",behanceUrl:"https://www.behance.net/venkateshbonamuxui",image:"images/project-fitness.png",images:["images/project-fitness.png"],description:"Adaptive workout planner designed from research to prototype — personas for 3 user segments, 8+ user flows covering onboarding, workout tracking, and trainer-connect features. Validated through usability testing with 5–8 users per round.",tags:["MOBILE APP","HEALTH APP","UX RESEARCH","PERSONAS","USER FLOWS","USABILITY TESTING","FIGMA"]},
+  "07":{title:"WEARABLE TEMPERATURE SAFETY APP",category:"WEARABLE UX · SAFETY SYSTEM",behanceUrl:"https://www.behance.net/venkateshbonamuxui",image:"images/project-wearable.png",images:["images/project-wearable.png"],description:"Wearable-connected safety app monitoring real-time hydration and physical capacity for high-temperature environments. 3-tier alert system (safe/caution/danger) with separate Android and iOS specs. WCAG 2.1 accessibility applied across 100% of components.",tags:["WEARABLE","SAFETY UX","ANDROID & IOS","ALERT DESIGN","ACCESSIBILITY","WCAG 2.1","FIGMA"]},
+  "08":{title:"EVENT MANAGEMENT PLATFORM",category:"E-COMMERCE · EVENT TECH",behanceUrl:"https://www.behance.net/venkateshbonamuxui",image:"images/project-events.png",images:["images/project-events.png"],description:"Unified event platform consolidating booking, reservations, and decor browsing into one interface. Reduced task steps by consolidating 3 flows into 1 cohesive journey. Full hi-fi mockups from brief to developer handoff in 6 weeks.",tags:["EVENT PLATFORM","E-COMMERCE","USER FLOWS","INFORMATION ARCHITECTURE","6 WEEKS","FIGMA"]}
 };
 
 document.addEventListener('DOMContentLoaded',()=>{
-  // Theme
-  const themeToggleBtn=document.getElementById('themeToggleBtn');
+
+  /* ── CUSTOM CURSOR ─────────────────────────── */
+  const cur=document.getElementById('cur'),curR=document.getElementById('curRing');
+  if(cur&&curR){
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+    (function tick(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(tick);})();
+    document.querySelectorAll('a,button,.project-card,.contact-item').forEach(el=>{
+      el.addEventListener('mouseenter',()=>{cur.classList.add('big');curR.classList.add('big');});
+      el.addEventListener('mouseleave',()=>{cur.classList.remove('big');curR.classList.remove('big');});
+    });
+  }
+
+  /* ── SCROLL PROGRESS + BACK TO TOP ────────── */
+  const sp=document.getElementById('scrollProgress');
+  const bt=document.getElementById('backTop');
+  window.addEventListener('scroll',()=>{
+    if(sp)sp.style.width=(window.scrollY/(document.body.scrollHeight-window.innerHeight)*100)+'%';
+    if(bt)bt.classList.toggle('show',window.scrollY>400);
+  },{passive:true});
+  bt?.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+
+  /* ── THEME ─────────────────────────────────── */
+  const themeBtn=document.getElementById('themeToggleBtn');
   const themeIcon=document.getElementById('themeIcon');
-  const updateThemeUI=(isLight)=>{if(themeIcon){themeIcon.setAttribute('data-lucide',isLight?'moon':'sun');if(window.lucide)lucide.createIcons();}};
-  const toggleTheme=()=>{document.body.classList.toggle('light-theme');const isLight=document.body.classList.contains('light-theme');localStorage.setItem('theme',isLight?'light':'dark');updateThemeUI(isLight);};
-  if(themeToggleBtn)themeToggleBtn.addEventListener('click',toggleTheme);
-  const saved=localStorage.getItem('theme');if(saved==='light'){document.body.classList.add('light-theme');updateThemeUI(true);}
+  const updateTheme=il=>{if(themeIcon){themeIcon.setAttribute('data-lucide',il?'moon':'sun');if(window.lucide)lucide.createIcons();}};
+  themeBtn?.addEventListener('click',()=>{
+    document.body.classList.toggle('light-theme');
+    const il=document.body.classList.contains('light-theme');
+    localStorage.setItem('theme',il?'light':'dark');updateTheme(il);
+  });
+  const saved=localStorage.getItem('theme');
+  if(saved==='light'){document.body.classList.add('light-theme');updateTheme(true);}
   if(window.lucide)lucide.createIcons();
 
-  // Modal
-  const modalOverlay=document.getElementById('projectModal');
-  const modalCloseBtn=document.getElementById('modalCloseBtn');
-  const modalGallery=document.getElementById('modalGallery');
-  const modalTitle=document.getElementById('modalTitle');
-  const modalCat=document.getElementById('modalCat');
-  const modalDesc=document.getElementById('modalDesc');
-  const modalTags=document.getElementById('modalTags');
-  const modalActions=document.getElementById('modalActions');
+  /* ── MODAL ─────────────────────────────────── */
+  const overlay=document.getElementById('projectModal');
+  const mTitle=document.getElementById('modalTitle');
+  const mCat=document.getElementById('modalCat');
+  const mGallery=document.getElementById('modalGallery');
+  const mDesc=document.getElementById('modalDesc');
+  const mTags=document.getElementById('modalTags');
+  const mActions=document.getElementById('modalActions');
 
   document.querySelectorAll('.project-card').forEach(card=>{
-    card.addEventListener('click',(e)=>{
+    card.addEventListener('click',e=>{
       if(e.target.closest('.project-arrow'))return;
-      const id=card.getAttribute('data-project');
-      const data=projectDetails[id];
-      if(!data)return;
-      modalTitle.textContent=data.title;
-      modalCat.textContent=data.category;
-      modalDesc.textContent=data.description;
-      modalTags.innerHTML=data.tags.map(t=>`<span class="skill-tag">${t}</span>`).join('');
-      if(modalActions){modalActions.innerHTML=data.behanceUrl?`<a href="${data.behanceUrl}" target="_blank" rel="noopener noreferrer" class="modal-behance-btn"><span>VIEW ON BEHANCE</span> ↗</a>`:'';}
-      if(modalGallery){
-        modalGallery.innerHTML='';
-        const imgs=data.images&&data.images.length?data.images:[data.image];
-        modalGallery.className='modal-gallery';
-        const grid=document.createElement('div');
-        grid.className='modal-gallery-grid';
+      const d=projectDetails[card.dataset.project];if(!d)return;
+      mTitle.textContent=d.title;mCat.textContent=d.category;mDesc.textContent=d.description;
+      mTags.innerHTML=d.tags.map(t=>`<span class="skill-tag">${t}</span>`).join('');
+      if(mActions)mActions.innerHTML=d.behanceUrl?`<a href="${d.behanceUrl}" target="_blank" class="modal-behance-btn"><span>VIEW ON BEHANCE</span> ↗</a>`:'';
+      if(mGallery){
+        mGallery.innerHTML='';
+        const imgs=d.images?.length?d.images:[d.image];
+        const grid=document.createElement('div');grid.className='modal-gallery-grid';
         imgs.forEach((src,i)=>{
-          const item=document.createElement('div');
-          item.className='modal-gallery-item';
-          item.innerHTML=`<img src="${src}" alt="${data.title} ${i+1}" class="modal-gallery-img" loading="lazy">`;
+          const item=document.createElement('div');item.className='modal-gallery-item';
+          item.innerHTML=`<img src="${src}" alt="${d.title} ${i+1}" class="modal-gallery-img" loading="lazy">`;
           grid.appendChild(item);
         });
-        modalGallery.appendChild(grid);
+        mGallery.className='modal-gallery';mGallery.appendChild(grid);
       }
-      modalOverlay.classList.add('active');
-      const mc=modalOverlay.querySelector('.modal-card');
-      if(mc)mc.scrollTop=0;
+      overlay.classList.add('active');
+      overlay.querySelector('.modal-card')?.scrollTo(0,0);
     });
   });
-
-  const closeModal=()=>modalOverlay.classList.remove('active');
-  if(modalCloseBtn)modalCloseBtn.addEventListener('click',closeModal);
-  if(modalOverlay)modalOverlay.addEventListener('click',e=>{if(e.target===modalOverlay)closeModal();});
+  const closeModal=()=>overlay.classList.remove('active');
+  document.getElementById('modalCloseBtn')?.addEventListener('click',closeModal);
+  overlay?.addEventListener('click',e=>{if(e.target===overlay)closeModal();});
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
-  // Copy toast
+  /* ── COPY TOAST ────────────────────────────── */
   const toast=document.getElementById('toastMsg');
-  const showToast=(text)=>{if(!toast)return;toast.textContent=text;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2500);};
-  document.querySelectorAll('[data-copy]').forEach(item=>{
-    item.addEventListener('click',()=>{
-      const val=item.getAttribute('data-copy');
-      navigator.clipboard.writeText(val).then(()=>showToast('Copied: '+val)).catch(()=>showToast('Copied!'));
+  const showToast=txt=>{if(!toast)return;toast.textContent=txt;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2500);};
+  document.querySelectorAll('[data-copy]').forEach(el=>{
+    el.addEventListener('click',()=>navigator.clipboard.writeText(el.dataset.copy).then(()=>showToast('Copied ✓')).catch(()=>showToast('Copied!')));
+  });
+
+  /* ── STATS COUNTER ─────────────────────────── */
+  let counted=false;
+  const countUp=()=>{
+    if(counted)return;counted=true;
+    document.querySelectorAll('.stat-number').forEach(el=>{
+      const tgt=parseInt(el.dataset.target,10);let n=0;const spd=Math.ceil(tgt/40);
+      const t=setInterval(()=>{n+=spd;if(n>=tgt){el.textContent=tgt+'+';clearInterval(t);}else el.textContent=n+'+';},35);
+    });
+  };
+
+  /* ── CARD 3D TILT ──────────────────────────── */
+  document.querySelectorAll('.project-card').forEach(card=>{
+    card.addEventListener('mousemove',e=>{
+      const r=card.getBoundingClientRect();
+      const x=e.clientX-r.left-r.width/2,y=e.clientY-r.top-r.height/2;
+      card.style.transform=`perspective(800px) rotateX(${-(y/r.height)*10}deg) rotateY(${(x/r.width)*10}deg) translateY(-5px)`;
+      const sh=card.querySelector('.card-shine');
+      if(sh){const px=((e.clientX-r.left)/r.width)*100,py=((e.clientY-r.top)/r.height)*100;sh.style.background=`radial-gradient(circle at ${px}% ${py}%,rgba(255,255,255,.09),transparent 65%)`;}
+    });
+    card.addEventListener('mouseleave',()=>{
+      card.style.transform='';
+      const sh=card.querySelector('.card-shine');if(sh)sh.style.background='';
     });
   });
 
-  // Stats counter
-  const statNums=document.querySelectorAll('.stat-number');
-  let animated=false;
-  const animateStats=()=>{
-    if(animated)return;
-    statNums.forEach(stat=>{
-      const tgt=parseInt(stat.getAttribute('data-target'),10);
-      let count=0;const spd=Math.ceil(tgt/35);
-      const t=setInterval(()=>{count+=spd;if(count>=tgt){stat.textContent=tgt+'+';clearInterval(t);}else{stat.textContent=count+'+';}},40);
+  /* ── MAGNETIC BUTTON ───────────────────────── */
+  const freebtn=document.querySelector('.freelance-btn');
+  if(freebtn){
+    freebtn.addEventListener('mousemove',e=>{
+      const r=freebtn.getBoundingClientRect();
+      freebtn.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.35}px,${(e.clientY-r.top-r.height/2)*.35}px)`;
     });
-    animated=true;
-  };
+    freebtn.addEventListener('mouseleave',()=>{freebtn.style.transform='';});
+  }
 
-  // Preloader
+  /* ── BLUR REVEAL ───────────────────────────── */
+  const blurObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});},{threshold:.1});
+  document.querySelectorAll('.section-head,.quote-card').forEach(el=>{el.classList.add('blur-reveal');blurObs.observe(el);});
+
+  /* ── PRELOADER & HERO ENTRANCE ─────────────── */
   const preloader=document.getElementById('preloader');
   const pp=document.getElementById('preloaderPercent');
   const pf=document.getElementById('preloaderFill');
   const prepHero=()=>{if(window.gsap)gsap.set([".top-header",".hero-bg-title","#portrait",".greeting-text",".hero-name",".hero-role-title",".hero-bio",".worldwide-badge",".tagline-pill",".stat-item"],{opacity:0});};
   const enterHero=()=>{
-    if(window.gsap){
-      gsap.fromTo(".top-header",{y:-50,opacity:0},{y:0,opacity:1,duration:0.9,ease:"power3.out"});
-      gsap.fromTo(".hero-bg-title",{scale:1.08,opacity:0},{scale:1,opacity:0.04,duration:1.1,ease:"power3.out"});
-      gsap.fromTo("#portrait",{scale:0.92,opacity:0,y:30},{scale:1,opacity:1,y:0,duration:1.2,ease:"power3.out",delay:0.1});
-      gsap.fromTo([".greeting-text",".hero-name",".hero-role-title",".hero-bio",".worldwide-badge"],{y:35,opacity:0},{y:0,opacity:1,duration:0.9,stagger:0.08,ease:"power3.out",delay:0.2});
-      gsap.fromTo([".tagline-pill",".stat-item"],{x:35,opacity:0},{x:0,opacity:1,duration:0.8,stagger:0.1,ease:"power3.out",delay:0.3});
-    }
+    if(!window.gsap)return;
+    gsap.fromTo(".top-header",{y:-50,opacity:0},{y:0,opacity:1,duration:.9,ease:"power3.out"});
+    gsap.fromTo(".hero-bg-title",{scale:1.08,opacity:0},{scale:1,opacity:.04,duration:1.1,ease:"power3.out"});
+    gsap.fromTo("#portrait",{scale:.92,opacity:0,y:30},{scale:1,opacity:1,y:0,duration:1.2,ease:"power3.out",delay:.1});
+    gsap.fromTo([".greeting-text",".hero-name",".hero-role-title",".hero-bio",".worldwide-badge"],{y:35,opacity:0},{y:0,opacity:1,duration:.9,stagger:.08,ease:"power3.out",delay:.2});
+    gsap.fromTo([".tagline-pill",".stat-item"],{x:35,opacity:0},{x:0,opacity:1,duration:.8,stagger:.1,ease:"power3.out",delay:.3});
   };
-
   if(preloader&&pp&&pf){
-    document.body.style.overflow='hidden';
-    prepHero();
+    document.body.style.overflow='hidden';prepHero();
     let prog=0;
-    const interval=setInterval(()=>{
+    const iv=setInterval(()=>{
       prog+=Math.floor(Math.random()*8)+5;
       if(prog>=100){
-        prog=100;clearInterval(interval);
-        pp.textContent='100%';pf.style.width='100%';
+        prog=100;clearInterval(iv);pp.textContent='100%';pf.style.width='100%';
         setTimeout(()=>{
-          if(window.gsap){gsap.to(preloader,{opacity:0,duration:0.5,ease:"power2.out",onComplete:()=>{preloader.style.display='none';setTimeout(()=>{document.body.style.overflow='';enterHero();},1500);}});}
+          if(window.gsap)gsap.to(preloader,{opacity:0,duration:.5,ease:"power2.out",onComplete:()=>{preloader.style.display='none';setTimeout(()=>{document.body.style.overflow='';enterHero();},1500);}});
           else{preloader.style.display='none';document.body.style.overflow='';enterHero();}
         },200);
       } else{pp.textContent=prog+'%';pf.style.width=prog+'%';}
     },40);
-  } else{enterHero();}
+  } else enterHero();
 
-  // GSAP ScrollTrigger
+  /* ── GSAP SCROLL ANIMATIONS ────────────────── */
   if(window.gsap&&window.ScrollTrigger){
     gsap.registerPlugin(ScrollTrigger);
-    gsap.to("#portrait",{y:-60,scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:0.5}});
-    gsap.to(".hero-bg-title",{scale:1.05,scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:0.5}});
-    ScrollTrigger.create({trigger:".stats-list",start:"top 80%",onEnter:()=>animateStats()});
-    gsap.fromTo(".section-title",{x:-30,opacity:0},{x:0,opacity:1,duration:0.6,ease:"power2.out",scrollTrigger:{trigger:"#projects",start:"top 95%",once:true}});
-    gsap.fromTo(".project-card",{y:30,opacity:0,scale:0.96},{y:0,opacity:1,scale:1,duration:0.6,stagger:0.08,ease:"power2.out",clearProps:"transform,opacity",scrollTrigger:{trigger:".projects-grid",start:"top 95%",once:true}});
-    gsap.fromTo(".red-circle-backdrop",{scale:0.8,opacity:0},{scale:1,opacity:0.08,duration:1,ease:"back.out(1.7)",clearProps:"transform",scrollTrigger:{trigger:"#education",start:"top 95%",once:true}});
-    gsap.fromTo(".edu-portrait-img",{scale:0.9,opacity:0},{scale:1,opacity:1,duration:0.8,ease:"power2.out",clearProps:"transform,opacity",scrollTrigger:{trigger:"#education",start:"top 95%",once:true}});
-    gsap.fromTo(".edu-banner-title",{x:40,opacity:0},{x:0,opacity:1,duration:0.7,ease:"power2.out",clearProps:"transform,opacity",scrollTrigger:{trigger:"#education",start:"top 95%",once:true}});
-    gsap.fromTo(".edu-banner-item",{x:40,opacity:0},{x:0,opacity:1,duration:0.7,stagger:0.12,ease:"power2.out",clearProps:"transform,opacity",scrollTrigger:{trigger:".edu-banner-list",start:"top 95%",once:true},onComplete:()=>document.querySelectorAll('.edu-banner-item').forEach(el=>el.classList.add('line-drawn'))});
-    gsap.fromTo(".skill-tag",{scale:0.8,x:-20,opacity:0},{scale:1,x:0,opacity:1,duration:0.5,stagger:0.04,ease:"back.out(1.5)",clearProps:"transform,opacity",scrollTrigger:{trigger:".skills-grid",start:"top 95%",once:true}});
-    gsap.fromTo(".edu-item",{y:30,opacity:0},{y:0,opacity:1,duration:0.6,stagger:0.12,ease:"power2.out",clearProps:"transform,opacity",scrollTrigger:{trigger:".education-list",start:"top 95%",once:true}});
-    document.querySelectorAll('.process-step').forEach(step=>{ScrollTrigger.create({trigger:step,start:"top 70%",onEnter:()=>step.classList.add('active'),onLeaveBack:()=>step.classList.remove('active')});});
+    gsap.to("#portrait",{y:-60,scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:.5}});
+    gsap.to(".hero-bg-title",{scale:1.05,scrollTrigger:{trigger:"#hero",start:"top top",end:"bottom top",scrub:.5}});
+    ScrollTrigger.create({trigger:".stats-list",start:"top 80%",onEnter:countUp});
+    gsap.fromTo(".section-title",{x:-30,opacity:0},{x:0,opacity:1,duration:.6,ease:"power2.out",scrollTrigger:{trigger:"#projects",start:"top 95%",once:true}});
+    gsap.fromTo(".project-card",{y:30,opacity:0,scale:.96},{y:0,opacity:1,scale:1,duration:.6,stagger:.08,ease:"power2.out",clearProps:"transform,opacity",scrollTrigger:{trigger:".projects-grid",start:"top 95%",once:true}});
+    gsap.fromTo(".red-circle-backdrop",{scale:.8,opacity:0},{scale:1,opacity:.08,duration:1,ease:"back.out(1.7)",clearProps:"transform",scrollTrigger:{trigger:"#education",start:"top 95%",once:true}});
+    gsap.fromTo(".edu-portrait-img",{scale:.9,opacity:0},{scale:1,opacity:1,duration:.8,ease:"power2.out",clearProps:"transform,opacity",scrollTrigger:{trigger:"#education",start:"top 95%",once:true}});
+    gsap.fromTo(".edu-banner-title",{x:40,opacity:0},{x:0,opacity:1,duration:.7,ease:"power2.out",clearProps:"transform,opacity",scrollTrigger:{trigger:"#education",start:"top 95%",once:true}});
+    gsap.fromTo(".edu-banner-item",{x:40,opacity:0},{x:0,opacity:1,duration:.7,stagger:.12,ease:"power2.out",clearProps:"transform,opacity",scrollTrigger:{trigger:".edu-banner-list",start:"top 95%",once:true},onComplete:()=>document.querySelectorAll('.edu-banner-item').forEach(el=>el.classList.add('line-drawn'))});
+    gsap.fromTo(".skill-tag",{scale:.8,x:-20,opacity:0},{scale:1,x:0,opacity:1,duration:.5,stagger:.04,ease:"back.out(1.5)",clearProps:"transform,opacity",scrollTrigger:{trigger:".skills-grid",start:"top 95%",once:true}});
+    gsap.fromTo(".edu-item",{y:30,opacity:0},{y:0,opacity:1,duration:.6,stagger:.12,ease:"power2.out",clearProps:"transform,opacity",scrollTrigger:{trigger:".education-list",start:"top 95%",once:true}});
+    document.querySelectorAll('.process-step').forEach(s=>{ScrollTrigger.create({trigger:s,start:"top 70%",onEnter:()=>s.classList.add('active'),onLeaveBack:()=>s.classList.remove('active')});});
     gsap.from(".quote-card",{y:40,opacity:0,duration:1,ease:"power3.out",scrollTrigger:{trigger:".quote-card",start:"top 85%"}});
-    gsap.from(".quote-icon",{scale:0,duration:0.8,ease:"back.out(1.7)",scrollTrigger:{trigger:".quote-card",start:"top 85%"}});
-    gsap.from(".contact-title",{y:30,opacity:0,duration:0.8,ease:"power3.out",scrollTrigger:{trigger:".footer-section",start:"top 80%"}});
+    gsap.from(".quote-icon",{scale:0,duration:.8,ease:"back.out(1.7)",scrollTrigger:{trigger:".quote-card",start:"top 85%"}});
+    gsap.from(".contact-title",{y:30,opacity:0,duration:.8,ease:"power3.out",scrollTrigger:{trigger:".footer-section",start:"top 80%"}});
     gsap.from(".contact-title span",{rotation:180,duration:1,ease:"power3.out",scrollTrigger:{trigger:".footer-section",start:"top 80%"}});
-    gsap.fromTo(".contact-item",{x:40,opacity:0},{x:0,opacity:1,duration:0.6,stagger:0.08,ease:"power2.out",clearProps:"transform,opacity",scrollTrigger:{trigger:".contact-mid-col",start:"top 95%",once:true}});
-    ScrollTrigger.create({trigger:".footer-section",start:"top 90%",onEnter:()=>{const btn=document.querySelector('.freelance-btn');if(btn)btn.classList.add('pulse-glow');}});
+    gsap.fromTo(".contact-item",{x:40,opacity:0},{x:0,opacity:1,duration:.6,stagger:.08,ease:"power2.out",clearProps:"transform,opacity",scrollTrigger:{trigger:".contact-mid-col",start:"top 95%",once:true}});
+    ScrollTrigger.create({trigger:".footer-section",start:"top 90%",onEnter:()=>{const b=document.querySelector('.freelance-btn');if(b)b.classList.add('pulse-glow');}});
   }
 });
 </script>
-</body>
 </html>

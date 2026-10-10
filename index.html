@@ -158,6 +158,24 @@ html.light-theme .theme-moon{display:block}
 .frame-box{position:absolute;inset:0;border-radius:4px;overflow:hidden;background:var(--s2)}
 .frame-box img{position:relative;width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform 1s var(--out)}
 .frame:hover .frame-box img{transform:scale(1.03)}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr; /* Gives more width to the right column where your image is */
+  gap: 4rem;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.frame {
+  position: relative;
+  width: min(1200px, 100%);
+  aspect-ratio: 4 / 5;
+}
+.frame {
+  position: relative;
+  width: min(1000px, 100%);
+  aspect-ratio: 4 / 5; /* Makes the frame slightly taller */
+}
 .frame::before{content:'';position:absolute;inset:8% -6% -4% -18%;background:radial-gradient(circle at 15% 55%,rgba(232,35,58,.28),transparent 60%);filter:blur(30px);z-index:-1;pointer-events:none}
 .frame-fallback{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--disp);font-size:6rem;font-weight:800;letter-spacing:-.05em;color:var(--t1);background:radial-gradient(circle at 30% 20%,var(--rmid),transparent 60%),var(--s2)}
 .frame-fallback b{font-weight:800}.frame-fallback span{color:var(--red)}
@@ -528,7 +546,7 @@ dialog#caseModal[open]{animation:mIn .4s var(--out)}
         </div>
         <div class="frame-box">
           <div class="frame-fallback" aria-hidden="true"><b>VB<span>.</span></b></div>
-          <img src="images/venkatesh-bonam-portrait.jpg" alt="Venkatesh Bonam, Product Designer" width="1118" height="1480" loading="eager" fetchpriority="high" decoding="async" onerror="this.remove()"/>
+          <img src="images/venkatesh-bonam-portrait.jpg" alt="Venkatesh Bonam, Product Designer" width="1089" height="1444" loading="eager" fetchpriority="high" decoding="async" onerror="this.remove()"/>
         </div>
         <div class="frame-sel" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
         <div class="frame-dim" aria-hidden="true">Fill × Hug · 720 × 960</div>

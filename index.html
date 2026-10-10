@@ -152,7 +152,7 @@ html.light-theme .theme-moon{display:block}
 
 /* Figma-style frame around portrait */
 .hero-visual{position:relative;display:flex;justify-content:center;padding:2.5rem 1.5rem}
-.frame{position:relative;width:min(360px,100%);aspect-ratio:3/4}
+.frame{position:relative;width:min(100%,clamp(260px,calc((100vh - 290px) * .75),380px));aspect-ratio:3/4}
 .frame-label{position:absolute;top:-1.6rem;left:0;font-size:.7rem;font-weight:500;color:var(--t2);display:flex;gap:.4rem;align-items:center}
 .frame-label svg{width:11px;height:11px}
 .frame-box{position:absolute;inset:0;border-radius:4px;overflow:hidden;background:var(--s2)}
@@ -172,10 +172,11 @@ html.light-theme .theme-moon{display:block}
 .ft-1{top:12%;left:-14%}
 .ft-2{bottom:16%;right:-12%;animation-delay:-3s}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-.mp-cursor{position:absolute;top:58%;left:-4%;display:flex;align-items:flex-start;gap:2px;animation:drift 9s ease-in-out infinite;pointer-events:none}
+.mp-cursor{position:absolute;top:66%;left:10%;z-index:3;display:flex;align-items:flex-start;gap:2px;animation:roam 14s ease-in-out infinite;pointer-events:none;will-change:left,top}
+.mp-cursor.following{animation:none}
 .mp-cursor svg{width:18px;height:18px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.35))}
-.mp-cursor span{margin-top:14px;background:var(--red);color:#fff;font-size:.66rem;font-weight:600;padding:.15rem .5rem;border-radius:0 8px 8px 8px}
-@keyframes drift{0%,100%{transform:translate(0,0)}25%{transform:translate(70px,-40px)}50%{transform:translate(140px,10px)}75%{transform:translate(50px,40px)}}
+.mp-cursor span{margin-top:14px;background:var(--red);color:#fff;font-size:.66rem;font-weight:600;padding:.15rem .5rem;border-radius:0 8px 8px 8px;white-space:nowrap;box-shadow:0 4px 14px rgba(232,35,58,.35)}
+@keyframes roam{0%,100%{left:10%;top:66%}22%{left:44%;top:80%}48%{left:66%;top:62%}74%{left:26%;top:88%}}
 
 /* ════════════════════════════════════════════
    MARQUEE
@@ -416,8 +417,9 @@ dialog#caseModal[open]{animation:mIn .4s var(--out)}
   .mobile-nav a{padding:.8rem 0;font-family:var(--disp);font-size:1.3rem;font-weight:700;border-bottom:1px solid var(--b1)}
   .mobile-nav a.btn{margin-top:1rem;justify-content:center;border:0;font-family:var(--sans);font-size:.95rem}
   .hero-inner,.exp-layout,.ds-layout,.about-layout{grid-template-columns:1fr;gap:3rem}
-  .hero-visual{padding:1.5rem 0 1rem}
-  .frame{width:min(260px,70%)}
+  #hero{min-height:auto;padding:6.5rem 0 3.5rem}
+  .hero-visual{order:-1;justify-content:flex-start;padding:1.6rem 0 2.2rem 0}
+  .frame{width:min(250px,62vw)}
   .exp-intro{position:static}
   .contact-grid{grid-template-columns:1fr}
 }
@@ -432,7 +434,8 @@ dialog#caseModal[open]{animation:mIn .4s var(--out)}
   .ds-points{grid-template-columns:1fr}
   .ft-1{left:-10%;top:auto;bottom:30%}.ft-2{right:-8%;bottom:5%}
   .float-tag{font-size:.68rem;padding:.45rem .65rem}
-  .mp-cursor{display:none}
+  .mp-cursor svg{width:15px;height:15px}
+  .mp-cursor span{font-size:.6rem;margin-top:11px}
   .quote-card{flex-direction:column;gap:.6rem;padding:1.8rem}
   .modal-scroll{padding:1.6rem 1.3rem}
   .footer-bottom{flex-direction:column;align-items:flex-start}
@@ -531,7 +534,7 @@ dialog#caseModal[open]{animation:mIn .4s var(--out)}
           <img src="images/venkatesh-bonam-portrait.jpg" alt="Venkatesh Bonam, Product Designer" width="559" height="740" loading="eager" fetchpriority="high" decoding="async" onerror="this.remove()"/>
         </div>
         <div class="frame-sel" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-        <div class="frame-dim" aria-hidden="true">Fill × Hug · 360 × 480</div>
+        <div class="frame-dim" id="frameDim" aria-hidden="true">Fill × Hug · 360 × 480</div>
 
         <!-- <div class="float-tag ft-1" aria-hidden="true"><span class="ft-ico">40+</span><span>Design System<small>Reusable Figma components</small></span></div>
         <div class="float-tag ft-2" aria-hidden="true"><span class="ft-ico">AA</span><span>WCAG 2.1<small>Accessible by default</small></span></div> -->
@@ -1175,13 +1178,55 @@ const PROJECTS = [
     ['work','experience','skills','about','contact'].forEach(id => { const s = document.getElementById(id); if (s) nio.observe(s); });
   }
 
-  /* Subtle parallax on hero frame */
+  /* Hero frame: parallax (desktop only), live size label, collaborator cursor */
   const frame = $('#heroFrame');
+  const cursor = $('.mp-cursor');
+  const dim = $('#frameDim');
+  const isDesktop = () => window.innerWidth > 920;
+
+  if (frame && dim && 'ResizeObserver' in window) {
+    new ResizeObserver(([e]) => {
+      const r = e.contentRect;
+      dim.textContent = `Fill × Hug · ${Math.round(r.width)} × ${Math.round(r.height)}`;
+    }).observe(frame);
+  }
+
   if (frame && !reduceMotion) {
     window.addEventListener('scroll', () => {
       const y = window.scrollY;
-      if (y < window.innerHeight) frame.style.transform = `translateY(${y * -0.08}px)`;
+      frame.style.transform = (isDesktop() && y < window.innerHeight) ? `translateY(${y * -0.08}px)` : '';
     }, { passive:true });
+  }
+
+  // On mouse devices the "Venkatesh" cursor follows your pointer like a Figma collaborator,
+  // trailing slightly behind. On touch devices (and when idle) it roams over the photo on its own.
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const hero = $('#hero');
+  if (cursor && hero && finePointer && !reduceMotion) {
+    let tx = 0, ty = 0, cx = 0, cy = 0, raf = null, active = false;
+    const loop = () => {
+      cx += (tx - cx) * 0.12; cy += (ty - cy) * 0.12;
+      cursor.style.left = cx + 'px'; cursor.style.top = cy + 'px';
+      raf = (active || Math.abs(tx - cx) + Math.abs(ty - cy) > 0.5) ? requestAnimationFrame(loop) : null;
+    };
+    hero.addEventListener('mousemove', (e) => {
+      const r = frame.getBoundingClientRect();
+      tx = e.clientX - r.left + 22;   // offset so it trails next to the real pointer
+      ty = e.clientY - r.top + 22;
+      if (!active) {
+        active = true;
+        const cs = cursor.getBoundingClientRect();
+        cx = cs.left - r.left; cy = cs.top - r.top;   // start from where it currently is
+        cursor.classList.add('following');
+      }
+      if (!raf) raf = requestAnimationFrame(loop);
+    });
+    hero.addEventListener('mouseleave', () => {
+      active = false;
+      if (raf) cancelAnimationFrame(raf), raf = null;
+      cursor.classList.remove('following');
+      cursor.style.left = ''; cursor.style.top = '';   // hand back to the roaming animation
+    });
   }
 })();
 </script>
